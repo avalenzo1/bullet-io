@@ -1,5 +1,7 @@
-function createClient() {
-  alert("test");
+class Client {
+  constructor(socket) {
+    
+  }
 }
 
-export default createClient;
+export { Client };

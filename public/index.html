@@ -10,9 +10,10 @@
   <body>
     <div id="app">
       <div data-page="mainScreen">
-        <form id="user-join-form">
+        <form onsubmit="requestRoom">
           <div>
-            <input type="input" name="name" />
+            <label for="user/name">Name</label>
+            <input type="input" name="name" for="user/name" />
           </div>
 
           <button type="submit">Play</button>
@@ -20,7 +21,7 @@
       </div>
       
       <div data-page="gameScreen">
-        <canvas id="canvas">Oops. Something happened.</canvas>
+        <canvas id="canvas" style="border: solid 1px;">Oops. Something happened.</canvas>
       </div>
     </div>
   </body>
