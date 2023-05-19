@@ -10,27 +10,44 @@ function UUID() {
 class Server {
     constructor(io) {
       this.io = io;
-      
+    }
+  
+    listen() {
       this.io.on("connection", (socket) => {
           this.createInstance(socket);
       });
     }
 
     captureEvent({ event, params }) {
-      if ('')
+      if (event === 'Room/Join') {
+        
+      }
+      
+      console.log(`Event "${event} was captured on ${new Date().toString()}"`)
     }
   
     createInstance(socket) {
+      // Creates On Events for Socket
+      socket.on("Room/Create", (state) => {
+          this.captureEvent({
+            event: 'Room/Create',
+            params: { socket }
+          });
+      });
+      
       socket.on("Room/Join", (state) => {
-          this.captureEvent({ event: 'Room/Join' });
+          this.captureEvent({
+            event: 'Room/Join',
+            params: { socket }
+          });
       });
     }
 }
 
 function createServer(io) {
-    let server = new Server(io);
-
-    server.listen();
+  let server = new Server(io);
+  
+  server.listen();
 }
 
 module.exports = {
