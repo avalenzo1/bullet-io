@@ -12,9 +12,14 @@ function resizeCanvas() {
   ctx.fillRect(0,100,100,100);
 }
 
-function requestGame(e) {
-  e.preventDefault(); 
-}
-
 window.addEventListener("DOMContentLoaded", resizeCanvas);
 window.addEventListener("resize", resizeCanvas);
+
+let form = document.getElementById("Form/Room/Join");
+let name = 
+
+form.onsubmit = (e) => {
+  e.preventDefault();
+  
+  
+};
