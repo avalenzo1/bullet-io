@@ -12,5 +12,9 @@ function resizeCanvas() {
   ctx.fillRect(0,100,100,100);
 }
 
+function requestGame(e) {
+  e.preventDefault(); 
+}
+
 window.addEventListener("DOMContentLoaded", resizeCanvas);
 window.addEventListener("resize", resizeCanvas);
