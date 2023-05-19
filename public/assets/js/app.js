@@ -15,11 +15,13 @@ function resizeCanvas() {
 window.addEventListener("DOMContentLoaded", resizeCanvas);
 window.addEventListener("resize", resizeCanvas);
 
-let form = document.getElementById("Form/Room/Join");
-let name = 
+const form = document.getElementById("Form/Room/Join");
+const nameInput = form.querySelector("[name='username']");
 
 form.onsubmit = (e) => {
   e.preventDefault();
   
+  let username = nameInput.value;
   
+  client.createInstance()
 };
