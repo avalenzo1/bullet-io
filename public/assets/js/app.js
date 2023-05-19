@@ -1,4 +1,4 @@
-import { Client } from './client.js';
+import { Client } from './blobius.js';
 
 const socket = io();
 const client = new Client(socket);

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Tank.io</title>
+    <title>Blobius.io</title>
     <link rel="stylesheet" href="/assets/css/styles.css" />
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
     <script src="/assets/js/app.js" type="module" defer></script>
@@ -10,7 +10,7 @@
   <body>
     <div id="app">
       <div class="modal">
-        <form onsubmit="requestRoom">
+        <form onsubmit="client.joinRoom()">
           <div>
             <label for="username">Name</label>
             <input type="input" name="name" for="username" />
