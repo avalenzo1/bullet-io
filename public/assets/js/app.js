@@ -18,10 +18,20 @@ window.addEventListener("resize", resizeCanvas);
 const form = document.getElementById("Form/Room/Join");
 const nameInput = form.querySelector("[name='username']");
 
+if (localStorage.getItem("player")) {
+  let player = JSON.parse(localStorage.getItem("player"));
+  
+  nameInput.value = player.username;
+}
+
 form.onsubmit = (e) => {
   e.preventDefault();
   
-  let username = nameInput.value;
+  let player = {
+    username: nameInput.value,
+  };
+  
+  localStorage.setItem("player", JSON.stringify(player));
   
   client.createInstance();
 };

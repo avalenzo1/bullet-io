@@ -6,10 +6,11 @@ function UUID() {
     );
 }
 
-
 class Server {
     constructor(io) {
       this.io = io;
+      this.socket = {};
+      this.room = {};
     }
   
     listen() {
@@ -20,13 +21,14 @@ class Server {
 
     captureEvent({ event, params }) {
       if (event === 'Room/Join') {
-        
+        console.log(params.socket.id)
       }
       
-      console.log(`Event "${event} was captured on ${new Date().toString()}"`)
+      console.log(`Event "${event} was captured on ${new Date().toString()}"`);
     }
   
     createInstance(socket) {
+      this.socket[socket.id] = socket;
       // Creates On Events for Socket
       socket.on("Room/Create", (state) => {
           this.captureEvent({
