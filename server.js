@@ -9,8 +9,6 @@ function UUID() {
 class Server {
     constructor(io) {
       this.io = io;
-      this.socket = {};
-      this.room = {};
     }
   
     listen() {
