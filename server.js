@@ -12,17 +12,17 @@ class Server {
       this.io = io;
       
       this.io.on("connection", (socket) => {
-            this.createInstance(socket);
-        });
+          this.createInstance(socket);
+      });
     }
 
-    listen() {
-        
+    captureEvent({ event, params }) {
+      if ('')
     }
   
     createInstance(socket) {
-      socket.on("Server/Room/Create", (state) => {
-          this.captureEvent({ event: 'Server/Room/Join' });
+      socket.on("Room/Join", (state) => {
+          this.captureEvent({ event: 'Room/Join' });
       });
     }
 }

@@ -23,5 +23,5 @@ form.onsubmit = (e) => {
   
   let username = nameInput.value;
   
-  client.createInstance()
+  client.createInstance();
 };
