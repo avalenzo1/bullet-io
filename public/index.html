@@ -9,18 +9,18 @@
 
   <body>
     <div id="app">
-      <div data-page="game-join">
+      <div class="modal">
         <form onsubmit="requestRoom">
           <div>
-            <label for="user/name">Name</label>
-            <input type="input" name="name" for="user/name" />
+            <label for="username">Name</label>
+            <input type="input" name="name" for="username" />
           </div>
 
           <button type="submit">Play</button>
         </form>
       </div>
       
-      <div data-page="game-view">
+      <div class="game">
         <canvas id="canvas" style="border: solid 1px;">Oops. Something happened.</canvas>
       </div>
     </div>
