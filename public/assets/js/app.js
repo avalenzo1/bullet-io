@@ -5,13 +5,20 @@ const client = new Client(socket);
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-function parseForm(formData) {
-  let object = {};
+// [Start of External Code]
+
+function formToJSON(formData) {
+  // https://stackoverflow.com/a/62010324
   
-  formData.forEach((value, key) => object[key] = value);
-  
-  let json = JSON.stringify(object);
+  return Object.fromEntries(
+    Array.from(formData.keys()).map(key => [
+      key, formData.getAll(key).length > 1 ? 
+        formData.getAll(key) : formData.get(key)
+    ])
+  );
 }
+
+// [End of External Code]
 
 function resizeCanvas() {
   ctx.canvas.width  = window.innerWidth;
@@ -29,13 +36,14 @@ window.addEventListener("resize", resizeCanvas);
 $("#new-game").on("submit", function (e) {
   e.preventDefault();
   
-  const formData = new FormData(e.target);
+  const formData = formToJSON(new FormData(e.target));
   
   console.log(formData)
+  localStorage.stItem("formData");
   
   // client.createInstance();
 });
 
 $(document).ready(function() {
-  
+  localStorage.getItem("formData");
 });
