@@ -51,6 +51,8 @@ class Server {
         if (params.roomId) {
           // Check if room was given
           console.log(params.roomId);
+          
+          room = this.parseRoom({ roomId: params.roomId });
         }
       } else {
         // If there are no rooms available
