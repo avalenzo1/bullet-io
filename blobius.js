@@ -11,10 +11,10 @@ function UID() {
 }
 
 class Room {
-  constructor(io) {
-    this.name = name;
-    this.id = UUID();
+  constructor(io, name, capacity = 100) {
     this.io = io;
+    this.id = UUID();
+    this.name = name || `Room-${this.id}`;
     this.socket = {};
     this.capacity = 100;
   }
@@ -24,11 +24,11 @@ class Room {
     return (Object.keys(this.socket).length / this.capacity) < 1;
   }
   
-  attachSocket() {
+  attachSocket(socket) {
     
   }
   
-  unattachSocket() {
+  unattachSocket(socket) {
     
   }
 }

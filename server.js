@@ -18,8 +18,6 @@ class Server {
       this.io.on("connection", (socket) => {
           this.createInstance(socket);
       });
-      
-      
     }
   
     parseSocket({ socket, socketId }) {
@@ -44,6 +42,7 @@ class Server {
   
     getRandomRoom(params) {
       let roomList = Object.keys(this.room);
+      let room;
       
       if (roomList.length > -1) {
         // If there are rooms available
@@ -57,7 +56,9 @@ class Server {
         // If there are no rooms available
         // Create one!
         
-        let room = new Room(this.io);
+        room = new Room(this.io);
+        
+        return room;
       }
     }
   
@@ -67,12 +68,23 @@ class Server {
       if (navigator[0] === 'Room') {
         let room;
         
-        if (navigator[1] === 'Join') {
+        if (navigator[1] === 'Random') {
           let room = this.getRandomRoom(params);
           
           room.attachSocket();
           
           console.log(params.socket.id);
+        }
+        
+        if (navigator[1] === 'Join') {
+          
+        }
+        
+        if (navigator[1] === 'Create') {
+          console.log(params);
+          
+          let room = new Room(this.io);
+          
         }
 
         if (navigator[1] === 'Leave') {
