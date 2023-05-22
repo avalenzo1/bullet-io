@@ -3,8 +3,16 @@ class Client {
     this.socket = socket;
   }
   
-  captureEvent(event) {
-    if (event) {
+  captureEvent({ }) {
+    if (event === 'Room/Create') {
+      
+    }
+    
+    if (event === 'Room/Create') {
+      
+    }
+    
+    if (event === 'Room/Create') {
       
     }
   }
