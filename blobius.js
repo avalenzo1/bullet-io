@@ -5,7 +5,11 @@ class Room {
     this.name = name;
     this.socket = {};
     this.capacity = 100;
-    
+  }
+  
+  get available() {
+    // Checks if room is full
+    return (Object.keys(this.socket).length / this.capacity) < 1;
   }
   
   attachSocket() {

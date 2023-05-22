@@ -50,8 +50,23 @@ class Server {
         }
     }
   
-    getRandomRoom() {
+    getRandomRoom(params) {
+      let roomList = Object.keys(this.room);
       
+      if (roomList.length > -1) {
+        // If there are rooms available
+        // Run This code block
+        
+        if (params.roomId) {
+          // Check if room was given
+          console.log(params.roomId);
+        }
+      } else {
+        // If there are no rooms available
+        // Create one!
+        
+        let room = new Room(this.io);
+      }
     }
   
     captureEvent({ event, params }) {
@@ -61,13 +76,9 @@ class Server {
         let room;
         
         if (navigator[1] === 'Join') {
-          console.log("Checking if roomId was given")
+          let room = this.getRandomRoom(params);
           
-          let room = this.getRandomRoom();
-          
-          
-          
-          console.log("Searching for Rooms...")
+          room.attachSocket();
           
           console.log(params.socket.id);
         }
