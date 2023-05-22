@@ -1,9 +1,8 @@
+const { v4 } = require('uuid');
 const { uniqueNamesGenerator, adjectives, colors, animals } = require('unique-names-generator');
 
 function UUID() {
-    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-    );
+    return v4();
 }
 
 function UID() {
@@ -27,7 +26,7 @@ class Room {
   constructor(io, name, capacity = 100) {
     this.io = io;
     this.id = UUID();
-    this.name = name || `Room-${this.id}`;
+    this.name = name || `Room ${uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], length: 3 })}`;
     this.socket = {};
     this.capacity = 100;
   }
@@ -39,6 +38,8 @@ class Room {
   
   attachSocket(socket) {
     this.socket[socket.id] = new Player(socket);
+    
+    this.io.to()
     
     console.log(this.socket);
   }

@@ -1,8 +1,6 @@
 const { Socket } = require('socket.io');
 const { Room } = require('./blobius');
 
-
-
 function roomHasInstanceOfSocket(room, socket) {
     if (room === undefined || !socket === undefined) return false;
     if (room.socket[socket.id] !== undefined) return true;
@@ -32,7 +30,7 @@ class Server {
       });
 
       this.io.of("/").adapter.on("leave-room", (room, socket) => {
-          this.captureEvent({ event: 'Room/Leave', params: { socket: this.socket[socket], room: this.room[room] } });
+          this.captureEvent({ event: 'Room/Leave', params: { socket, room: this.room[room] } });
 
           console.log(`socket ${socket} has left room ${room}`);
       });
@@ -77,10 +75,17 @@ class Server {
         let room;
         
         if (navigator[1] === 'Join') {
-          let room = this.getRandomRoom(params);
+          room = this.getRandomRoom(params)
           
-          if ()
+          // If returned room is null, creates one
           
+          if (!(room instanceof Room)) {
+            room = new Room(this.io);
+          }
+          
+          this.room[room.id] = room;
+
+          console.log(this.room);
           console.log(params.socket.id);
         }
         
