@@ -49,6 +49,7 @@ $(document).ready(function() {
     
     console.log(formData)
     
+    // Populates Input Data
     for (let key in formData) {
       if (formData.hasOwnProperty(key)) {
         $(`#new-game input[name='${key}']`).val(formData[key]);
