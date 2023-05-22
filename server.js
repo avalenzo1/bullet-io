@@ -1,4 +1,5 @@
 const { Socket } = require('socket.io');
+const { Room } = require('./blobius');
 
 function UUID() {
     return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
@@ -6,15 +7,35 @@ function UUID() {
     );
 }
 
+function UID() {
+    return Math.random().toString(36).slice(-6).toUpperCase();
+}
+
+function roomHasInstanceOfSocket(room, socket) {
+    if (room === undefined || !socket === undefined) return false;
+    if (room.socket[socket.id] !== undefined) return true;
+}
+
 class Server {
     constructor(io) {
       this.io = io;
+      this.room = {};
     }
   
     listen() {
       this.io.on("connection", (socket) => {
           this.createInstance(socket);
       });
+      
+      
+    }
+  
+    parseRoom({ roomId }) {
+      
+    }
+  
+    parseSocket({ socket, socketId }) {
+      
     }
 
     captureEvent({ event, params }) {
@@ -22,7 +43,8 @@ class Server {
       
       if (navigator[0] === 'Room') {
         if (navigator[1] === 'Join') {
-          console.log("Room ")
+          console.log("Searching for Rooms...")
+          
           console.log(params.socket.id);
         }
 
@@ -46,6 +68,13 @@ class Server {
       socket.on("Room/Join", (state) => {
           this.captureEvent({
             event: 'Room/Join',
+            params: { socket }
+          });
+      });
+      
+      socket.on("Room/Leave", (state) => {
+          this.captureEvent({
+            event: 'Room/Leave',
             params: { socket }
           });
       });
