@@ -55,6 +55,8 @@ class Server {
         
         room = new Room(this.io);
         
+        this.room[room.id] = room;
+        
         return room;
       }
     }
@@ -73,6 +75,8 @@ class Server {
           room.attachSocket(socket);
           
           console.log(params.socket.id);
+          
+          console.log(this.room)
         }
         
         if (navigator[1] === 'Join') {
@@ -89,9 +93,11 @@ class Server {
         if (navigator[1] === 'Leave') {
           console.log(params.socket.id);
         } 
+        
+        console.log(this.room)
       }
       
-      console.log(`Event "${event} was captured on ${new Date().toString()}"`);
+      console.log(`Event "${event}" was captured on ${new Date().toString()}`);
     }
   
     createInstance(socket) {

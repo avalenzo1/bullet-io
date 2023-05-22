@@ -10,6 +10,19 @@ function UID() {
     return Math.random().toString(36).slice(-6).toUpperCase();
 }
 
+class Game {
+  constructor() {
+    
+  }
+}
+
+class Player {
+    constructor({ socket, name }) {
+        this.socket = socket;
+        this.name = name || uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], length: 3 });
+    }
+}
+
 class Room {
   constructor(io, name, capacity = 100) {
     this.io = io;
@@ -25,19 +38,14 @@ class Room {
   }
   
   attachSocket(socket) {
+    this.socket[socket.id] = new Player(socket);
     
+    console.log(this.socket);
   }
   
   unattachSocket(socket) {
     
   }
-}
-
-class Player {
-    constructor({ socket, name }) {
-        this.socket = socket;
-        this.name = name || uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], length: 3 });
-    }
 }
 
 module.exports = {
