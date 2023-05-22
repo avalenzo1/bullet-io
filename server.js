@@ -18,15 +18,23 @@ class Server {
     }
 
     captureEvent({ event, params }) {
-      if (event === 'Room/Join') {
-        console.log(params.socket.id)
+      const navigator = event.split("/");
+      
+      if (navigator[0] === 'Room') {
+        if (navigator[1] === 'Join') {
+          console.log("Room ")
+          console.log(params.socket.id);
+        }
+
+        if (navigator[1] === 'Leave') {
+          console.log(params.socket.id);
+        } 
       }
       
       console.log(`Event "${event} was captured on ${new Date().toString()}"`);
     }
   
     createInstance(socket) {
-      this.socket[socket.id] = socket;
       // Creates On Events for Socket
       socket.on("Room/Create", (state) => {
           this.captureEvent({

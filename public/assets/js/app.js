@@ -9,7 +9,8 @@ function resizeCanvas() {
   ctx.canvas.width  = window.innerWidth;
   ctx.canvas.height = window.innerHeight;
   
-  ctx.fillRect(0,100,100,100);
+  ctx.fillStyle = "#dfdfdf";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
 }
 
 window.addEventListener("DOMContentLoaded", resizeCanvas);
