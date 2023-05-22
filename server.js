@@ -76,18 +76,12 @@ class Server {
       if (navigator[0] === 'Room') {
         let room;
         
-        if (navigator[1] === 'Random') {
+        if (navigator[1] === 'Join') {
           let room = this.getRandomRoom(params);
           
-          room.attachSocket(socket);
+          if ()
           
           console.log(params.socket.id);
-          
-          console.log(this.room)
-        }
-        
-        if (navigator[1] === 'Join') {
-          
         }
         
         if (navigator[1] === 'Create') {
