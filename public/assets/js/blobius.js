@@ -3,7 +3,7 @@ class Client {
     this.socket = socket;
   }
   
-  createInstance() {
+  createInstance(formData) {
     this.socket.emit("Room/Join");
   }
 }

@@ -38,12 +38,21 @@ $("#new-game").on("submit", function (e) {
   
   const formData = formToJSON(new FormData(e.target));
   
-  console.log(formData)
-  localStorage.stItem("formData");
+  localStorage.setItem("formData", JSON.stringify(formData));
   
-  // client.createInstance();
+  client.createInstance(formData);
 });
 
 $(document).ready(function() {
-  localStorage.getItem("formData");
+  if (localStorage.getItem("formData")) {
+    let formData = JSON.parse(localStorage.getItem("formData"));
+    
+    console.log(formData)
+    
+    for (let key in formData) {
+      if (formData.hasOwnProperty(key)) {
+        $(`#new-game input[name='${key}']`).val(formData[key]);
+      }
+    }
+  }
 });
