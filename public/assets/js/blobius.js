@@ -1,3 +1,5 @@
+
+
 class Client {
   constructor(socket) {
     this.socket = socket;
@@ -11,6 +13,12 @@ class Client {
     
     this.socket.on('connect', function() {
       console.log("Socket was connected");
+    });
+    
+    this.socket.on('Room/Join', function(room) {
+      console.log(room);
+      
+      this.room = room;
     });
   }
   
