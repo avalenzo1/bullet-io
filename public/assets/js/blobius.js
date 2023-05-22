@@ -1,28 +1,29 @@
 class Client {
   constructor(socket) {
     this.socket = socket;
+    this.room;
   }
   
-  captureEvent({ }) {
+  listen() {
+    this.socket.on('disconnect', function() {
+      console.log("Socket was disconnected");
+    });
+    
+    this.socket.on('connect', function() {
+      console.log("Socket was connected");
+    });
+  }
+  
+  captureEvent({ event, params }) {
     if (event === 'Room/Create') {
       
     }
     
-    if (event === 'Room/Create') {
-      
+    if (event === 'Room/Join') {
+      this.socket.emit("Room/Join", params.formData);
     }
     
-    if (event === 'Room/Create') {
-      
-    }
-  }
-  
-  createInstance(formData) {
-    if (formData.hasOwnProperty("room-id")) {
-      this.socket.emit("Room/Join", formData);
-    } else {
-      this.socket.emit("Room/Random", formData);
-    }
+    console.log(`Event "${event}" was captured on ${new Date().toString()}`);
   }
 }
 

@@ -40,7 +40,10 @@ $("#new-game").on("submit", function (e) {
   
   localStorage.setItem("formData", JSON.stringify(formData));
   
-  client.createInstance(formData);
+  client.captureEvent({
+    event: "Room/Join",
+    params: { formData }
+  });
 });
 
 $(document).ready(function() {
@@ -56,4 +59,6 @@ $(document).ready(function() {
       }
     }
   }
+  
+  client.listen();
 });
