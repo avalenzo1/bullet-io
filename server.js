@@ -18,6 +18,24 @@ class Server {
       this.io.on("connection", (socket) => {
           this.createInstance(socket);
       });
+
+      this.io.of("/").adapter.on("delete-room", (room) => {
+          console.log(`room ${room} was deleted`);
+      });
+
+      this.io.of("/").adapter.on("create-room", (room) => {
+          console.log(`room ${room} was created`);
+      });
+
+      this.io.of("/").adapter.on("join-room", (room, socket) => {
+          console.log(`socket ${socket} has joined room ${room}`);
+      });
+
+      this.io.of("/").adapter.on("leave-room", (room, socket) => {
+          this.captureEvent({ event: 'Room/Leave', params: { socket: this.socket[socket], room: this.room[room] } });
+
+          console.log(`socket ${socket} has left room ${room}`);
+      });
     }
   
     parseSocket({ socket, socketId }) {
@@ -56,6 +74,8 @@ class Server {
         room = new Room(this.io);
         
         this.room[room.id] = room;
+        
+        console.log(this.room)
         
         return room;
       }
