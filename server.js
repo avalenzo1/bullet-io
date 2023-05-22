@@ -48,12 +48,7 @@ class Server {
         // If there are rooms available
         // Run This code block
         
-        if (params.roomId) {
-          // Check if room was given
-          console.log(params.roomId);
-          
-          room = this.parseRoom({ roomId: params.roomId });
-        }
+        
       } else {
         // If there are no rooms available
         // Create one!
@@ -67,13 +62,15 @@ class Server {
     captureEvent({ event, params }) {
       const navigator = event.split("/");
       
+      let socket = this.parseSocket(params);
+      
       if (navigator[0] === 'Room') {
         let room;
         
         if (navigator[1] === 'Random') {
           let room = this.getRandomRoom(params);
           
-          room.attachSocket();
+          room.attachSocket(socket);
           
           console.log(params.socket.id);
         }
