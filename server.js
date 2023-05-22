@@ -93,8 +93,6 @@ class Server {
         if (navigator[1] === 'Leave') {
           console.log(params.socket.id);
         } 
-        
-        console.log(this.room)
       }
       
       console.log(`Event "${event}" was captured on ${new Date().toString()}`);
