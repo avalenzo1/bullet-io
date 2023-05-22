@@ -45,10 +45,6 @@ class Server {
     }
 
     parseRoom({ socket, socketId, room, roomId }) {
-        if (typeof socket === 'object' && typeof this.socket[socket.id].roomId === 'string' && this.room[this.socket[socket.id].roomId] instanceof Room) {
-            return this.room[this.socket[socket.id].roomId];
-        }
-
         if (room instanceof Room) {
             return room;
         }
@@ -67,18 +63,9 @@ class Server {
         // Run This code block
         
         
-      } else {
-        // If there are no rooms available
-        // Create one!
-        
-        room = new Room(this.io);
-        
-        this.room[room.id] = room;
-        
-        console.log(this.room)
-        
-        return room;
       }
+      
+      return null;
     }
   
     captureEvent({ event, params }) {
