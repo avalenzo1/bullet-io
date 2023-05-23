@@ -1,23 +1,9 @@
 import { Client } from './blobius.js';
+import { formToJSON } from './tool-box.js'
 
 const socket = io();
 const client = new Client(socket);
 const canvas = document.getElementById("canvas");
-
-// [Start of External Code]
-
-function formToJSON(formData) {
-  // https://stackoverflow.com/a/62010324
-  
-  return Object.fromEntries(
-    Array.from(formData.keys()).map(key => [
-      key, formData.getAll(key).length > 1 ? 
-        formData.getAll(key) : formData.get(key)
-    ])
-  );
-}
-
-// [End of External Code]
 
 function resizeCanvas() {
   canvas.width  = window.innerWidth;
@@ -32,10 +18,13 @@ window.addEventListener("resize", resizeCanvas);
 $("#new-game").on("submit", function (e) {
   e.preventDefault();
   
+  // On form submit, convert form input to JSON
   const formData = formToJSON(new FormData(e.target));
   
+  // Saves form data to localStorage
   localStorage.setItem("formData", JSON.stringify(formData));
   
+  // Starts Client Connection
   client.captureEvent({
     event: "Room/Join",
     params: { formData }
@@ -43,6 +32,8 @@ $("#new-game").on("submit", function (e) {
 });
 
 $(document).ready(function() {
+  // If localStorage includes formData, populate data into form
+  
   if (localStorage.getItem("formData")) {
     let formData = JSON.parse(localStorage.getItem("formData"));
     
@@ -56,5 +47,6 @@ $(document).ready(function() {
     }
   }
   
+  // Creates Socket.IO onEvents
   client.listen();
 });

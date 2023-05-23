@@ -85,6 +85,7 @@ class Room {
     if (this.socket.hasOwnProperty(socket.id)) {
       console.warn("Socket already exists");
     } else {
+      socket.join(this.id);
       this.socket[socket.id] = new Player({ socket, params });
     }
     
@@ -94,7 +95,10 @@ class Room {
   }
   
   unattachSocket(socket) {
-    delete this.socket[socket.id];
+    if (socket instanceof Socket) {
+      socket.leave(this.id);
+      delete this.socket[socket.id]; 
+    }
   }
 }
 

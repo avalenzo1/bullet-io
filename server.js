@@ -144,7 +144,7 @@ class Server {
     socket.on("Room/Join", (formData) => {
       this.captureEvent({
         event: "Room/Join",
-        params: { formData, socket },
+        params: { socket, formData },
       });
     });
 
