@@ -1,8 +1,11 @@
 import { Client } from './blobius.js';
 import { formToJSON } from './tool-box.js'
 
+// Creates Socket Connection
 const socket = io();
 const client = new Client(socket);
+
+// Resizes Canvas
 const canvas = document.getElementById("canvas");
 
 function resizeCanvas() {

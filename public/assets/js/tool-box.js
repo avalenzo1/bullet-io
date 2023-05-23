@@ -1,4 +1,4 @@
-// These a
+// These are functions not coded by me
 
 // [Start of External Code]
 

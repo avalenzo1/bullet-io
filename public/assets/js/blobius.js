@@ -1,14 +1,15 @@
+
 class Game {
   constructor(canvas) {
-    this.canvas = canvas;
+    this.canvas = document.getElementById("canvas");
     this.ctx = canvas.getContext("2d");
+    
+    // List of all rendered items
     this.playerList = [];
     this.itemList = [];
     this.pelletList = [];
     
     this.showDebug = false;
-    
-    window.requestAnimationFrame(this.render);
   }
   
   render() {
@@ -18,23 +19,22 @@ class Game {
     
     window.requestAnimationFrame(this.render);
   }
-}
-
-function createGame() {
-  const canvas = document.getElementById("canvas");
-  const game = new Game(canvas);
   
-  return game;
+  selfDestruct() {
+    
+  }
 }
 
 class Client {
   constructor(socket) {
     this.socket = socket;
-    this.game;
-    this.room;
+    this.room = null;
+    this.game = new Game();
   }
   
   listen() {
+    // Creates onEvents for socket
+    
     this.socket.on('disconnect', function() {
       console.log("Socket was disconnected");
     });
@@ -45,8 +45,10 @@ class Client {
     
     this.socket.on('Room/Join', function(room) {
       this.room = room;
+    });
+                   
+    this.socket.on('Room/Tick', function() {
       
-      this.game = createGame();
     });
   }
   
