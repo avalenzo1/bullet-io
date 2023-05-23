@@ -16,13 +16,7 @@ class Game {
   }
 
   render() {
-    let ctx = this.ctx;
-    let canvas = this.canvas;
-
-    ctx.fillStyle = "#ccc"
-    ctx.fillRect(0,0, 100, 100);
-
-    window.requestAnimationFrame(this.render);
+    
   }
 }
 
@@ -45,7 +39,7 @@ class Client {
     });
 
     this.socket.on("Room/Join", function (room) {
-      alert(JSON.strini)
+      
     });
     
     this.socket.on("Room/Tick", function (room) {
