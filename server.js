@@ -10,6 +10,7 @@ class Server {
     constructor(io) {
       this.io = io;
       this.room = {};
+      this.socket = {};
     }
   
     listen() {
@@ -38,11 +39,23 @@ class Server {
   
     parseSocket({ socket, socketId }) {
         if (socket instanceof Socket) {
-            return socket;
+          return socket;
+        }
+      
+        if (this.socket[socketId] instanceof Socket) {
+          return this.socket[socketId];
         }
     }
 
-    parseRoom({ socket, socketId, room, roomId }) {
+    parseRoom({ socket, socketId, room, roomId }) {]
+        if (socket instanceof Socket) {
+          
+        }
+                                                   
+        if (this.socket[socketId] instanceof Socket) {
+          return this.socket[socketId];
+        }
+    
         if (room instanceof Room) {
             return room;
         }
@@ -111,6 +124,8 @@ class Server {
     }
   
     createInstance(socket) {
+      this.socket[socket.id] = socket;
+      
       // Creates On Events for Socket
       socket.on("Room/Create", () => {
           this.captureEvent({
