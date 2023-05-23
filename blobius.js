@@ -44,7 +44,12 @@ class Room {
   }
   
   attachSocket(socket, params) {
-    this.socket[socket.id] = new Player({ socket, params });
+    if (this.socket.hasOwnProperty(socket.id)) {
+      console.warn("Socket already exists")
+    } else {
+      this.socket[socket.id] = new Player({ socket, params });
+    }
+    
     
     this.#io.to(socket.id).emit("Room/Join", this);
     

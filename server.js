@@ -56,11 +56,12 @@ class Server {
       let roomList = Object.keys(this.room);
       let room;
       
-      if (roomList.length > -1) {
+      if (roomList.length > 0) {
         // If there are rooms available
         // Run This code block
+        // Don't ask...
         
-        
+        return this.room[roomList[Math.floor(Math.random() * roomList.length)]];
       }
       
       return null;
