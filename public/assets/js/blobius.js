@@ -1,21 +1,20 @@
 class Game {
-  constructor(client, canvas) {
-    this.client = client;
+  constructor(canvas) {
     this.canvas = canvas;
     this.ctx = this.canvas.getContext("2d");
-    
-    window.requestAnimationFrame(this.render);
+    this.blobSystem = [];
+    this.pelletSystem = [];
+    this.showDebug = false;
   }
-
+  
   render() {
-    this.ctx.fillText(const ctx = canvas.getContext("2d");)
     
   }
 }
 
-function createGame(client) {
+function createGame() {
   const canvas = document.getElementById("canvas");
-  const game = new Game(client, canvas);
+  const game = new Game(canvas);
   
   return game;
 }
@@ -39,7 +38,7 @@ class Client {
     this.socket.on('Room/Join', function(room) {
       this.room = room;
       
-      this.game = createGame(this);
+      this.game = createGame();
     });
   }
   
