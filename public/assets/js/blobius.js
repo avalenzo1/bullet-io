@@ -1,8 +1,34 @@
+function createGame() {
+  let canvasContainer = document.getElementById("canvas-container");
+  
+  canvasContainer.innerHTML = "";
+  
+  let canvas = document.createElement("canvas");
+  let ctx = canvas.getContext("2d");
+  
+  canvasContainer.appendChild(canvas);
+  
+  function resizeCanvas() {
+    ctx.canvas.width  = window.innerWidth;
+    ctx.canvas.height = window.innerHeight;
 
+    ctx.fillStyle = "#dfdfdf";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    
+    console.log("um...")
+  }
+  
+  resizeCanvas();
+
+  window.addEventListener("resize", resizeCanvas);
+  
+  
+}
 
 class Client {
   constructor(socket) {
     this.socket = socket;
+    this.game;
     this.room;
   }
   
@@ -16,9 +42,9 @@ class Client {
     });
     
     this.socket.on('Room/Join', function(room) {
-      console.log(room);
-      
       this.room = room;
+      
+      this.game = createGame();
     });
   }
   
