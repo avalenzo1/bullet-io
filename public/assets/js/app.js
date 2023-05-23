@@ -3,7 +3,6 @@ import { Client } from './blobius.js';
 const socket = io();
 const client = new Client(socket);
 const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
 
 // [Start of External Code]
 
@@ -21,11 +20,8 @@ function formToJSON(formData) {
 // [End of External Code]
 
 function resizeCanvas() {
-  ctx.canvas.width  = window.innerWidth;
-  ctx.canvas.height = window.innerHeight;
-  
-  ctx.fillStyle = "#dfdfdf";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
 }
 
 window.addEventListener("DOMContentLoaded", resizeCanvas);
