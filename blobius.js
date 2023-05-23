@@ -11,7 +11,10 @@ function UID() {
 
 class Game {
   constructor() {
-    
+    this.arena = new Arena();
+    this.pelletSystem = new PelletSystem();
+    this.blobSystem = new BlobSystem();
+    this.collisionSystem = new CollisionSystem();
   }
 }
 
@@ -19,7 +22,11 @@ class Player {
   constructor({ socket, params }) {
       // this.socket = socket;
       this.username = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], length: 3 });
-      
+      this.mass = 0;
+      this.x = 0;
+      this.y = 0;
+      this.xVel = 0;
+      this.yVel = 0;
     
       if (params.hasOwnProperty("username")) {
         this.username = params.username;
