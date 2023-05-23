@@ -47,13 +47,13 @@ class Server {
         }
     }
 
-    parseRoom({ socket, socketId, room, roomId }) {]
+    parseRoom({ socket, socketId, room, roomId }) {
         if (socket instanceof Socket) {
           
         }
                                                    
         if (this.socket[socketId] instanceof Socket) {
-          return this.socket[socketId];
+          
         }
     
         if (room instanceof Room) {
