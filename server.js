@@ -83,23 +83,26 @@ class Server {
             room = new Room(this.io);
           }
           
+          room.attachSocket(socket);
+          
           this.room[room.id] = room;
-
-          console.log(this.room);
-          console.log(params.socket.id);
         }
         
         if (navigator[1] === 'Create') {
           console.log(params);
           
           let room = new Room(this.io);
+              room.attachSocket(socket);
           
+          this.room[room.id] = room;
         }
 
         if (navigator[1] === 'Leave') {
           console.log(params.socket.id);
         } 
       }
+      
+      console.log(this.room);
       
       console.log(`Event "${event}" was captured on ${new Date().toString()}`);
     }
