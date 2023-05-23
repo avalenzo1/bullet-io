@@ -1,16 +1,22 @@
-
-
 class Game {
   constructor(canvas) {
     this.canvas = canvas;
-    this.ctx = this.canvas.getContext("2d");
-    this.blobSystem = [];
-    this.pelletSystem = [];
+    this.ctx = canvas.getContext("2d");
+    this.playerList = [];
+    this.itemList = [];
+    this.pelletList = [];
+    
     this.showDebug = false;
+    
+    window.requestAnimationFrame(this.render);
   }
   
   render() {
+    let ctx = this.ctx;
     
+    ctx.fillText("hi", 12, 12);
+    
+    window.requestAnimationFrame(this.render);
   }
 }
 

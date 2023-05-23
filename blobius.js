@@ -9,12 +9,43 @@ function UID() {
     return Math.random().toString(36).slice(-6).toUpperCase();
 }
 
+class Arena {
+  constructor() {
+    
+  }
+}
+
+class PelletSystem {
+  constructor() {
+    
+  }
+}
+
+class PlayerSystem {
+  constructor() {
+    
+  }
+}
+
+class ItemSystem {
+  constructor() {
+    
+  }
+}
+
+class CollisionDetectionEngine {
+  constructor() {
+    
+  }
+}
+
 class Game {
   constructor() {
     this.arena = new Arena();
     this.pelletSystem = new PelletSystem();
-    this.blobSystem = new BlobSystem();
-    this.collisionSystem = new CollisionSystem();
+    this.playerSystem = new PlayerSystem();
+    this.itemSystem = new ItemSystem();
+    this.collisionDetectionEngine = new CollisionDetectionEngine();
   }
 }
 
