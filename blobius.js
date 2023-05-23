@@ -23,8 +23,10 @@ class Player {
 }
 
 class Room {
+  #io;
+  
   constructor(io, name, capacity = 100) {
-    this.io = io;
+    this.#io = io;
     this.id = UUID();
     this.name = name || `Room ${uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], length: 3 })}`;
     this.socket = {};
@@ -39,7 +41,7 @@ class Room {
   attachSocket(socket) {
     this.socket[socket.id] = new Player(socket);
     
-    this.io.to()
+    this.io.to(socket.id).emit("Room/Join", this);
     
     console.log(this.socket);
   }
