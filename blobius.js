@@ -16,10 +16,17 @@ class Game {
 }
 
 class Player {
-    constructor({ socket, name }) {
-        this.socket = socket;
-        this.name = name || uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], length: 3 });
-    }
+  constructor({ socket, params }) {
+      this.socket = socket;
+      this.username = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], length: 3 });
+      
+    
+      if (params.hasOwnProperty("username")) {
+        params.
+      }
+  }
+  
+  
 }
 
 class Room {
@@ -38,16 +45,16 @@ class Room {
     return (Object.keys(this.socket).length / this.capacity) < 1;
   }
   
-  attachSocket(socket) {
-    this.socket[socket.id] = new Player(socket);
+  attachSocket(socket, params) {
+    this.socket[socket.id] = new Player(socket, params);
     
-    this.io.to(socket.id).emit("Room/Join", this);
+    this.#io.to(socket.id).emit("Room/Join", this);
     
     console.log(this.socket);
   }
   
   unattachSocket(socket) {
-    
+    delete this.socket[socket.id];
   }
 }
 

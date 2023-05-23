@@ -75,6 +75,7 @@ class Server {
         let room;
         
         if (navigator[1] === 'Join') {
+          // Returns available rooms from room object
           room = this.getRandomRoom(params)
           
           // If returned room is null, creates one
@@ -83,7 +84,8 @@ class Server {
             room = new Room(this.io);
           }
           
-          room.attachSocket(socket);
+          // Attaches Socket
+          room.attachSocket(socket, params.formData);
           
           this.room[room.id] = room;
         }
@@ -92,7 +94,7 @@ class Server {
           console.log(params);
           
           let room = new Room(this.io);
-              room.attachSocket(socket);
+              room.attachSocket(socket, params.formData);
           
           this.room[room.id] = room;
         }
@@ -116,10 +118,10 @@ class Server {
           });
       });
       
-      socket.on("Room/Join", (roomId) => {
+      socket.on("Room/Join", (formData) => {
           this.captureEvent({
             event: "Room/Join",
-            params: { roomId, socket }
+            params: { formData, socket }
           });
       });
       
