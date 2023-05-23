@@ -1,24 +1,5 @@
 function createGame() {
-  let canvasContainer = document.getElementById("canvas-container");
-  
-  canvasContainer.innerHTML = "";
-  
-  let canvas = document.createElement("canvas");
-  let ctx = canvas.getContext("2d");
-  
-  canvasContainer.appendChild(canvas);
-  
-  function resizeCanvas() {
-    ctx.canvas.width  = window.innerWidth;
-    ctx.canvas.height = window.innerHeight;
 
-    ctx.fillStyle = "#dfdfdf";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-  }
-  
-  resizeCanvas();
-
-  window.addEventListener("resize", resizeCanvas);
 }
 
 class Client {
