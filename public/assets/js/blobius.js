@@ -14,15 +14,11 @@ function createGame() {
 
     ctx.fillStyle = "#dfdfdf";
     ctx.fillRect(0,0,canvas.width,canvas.height);
-    
-    console.log("um...")
   }
   
   resizeCanvas();
 
   window.addEventListener("resize", resizeCanvas);
-  
-  
 }
 
 class Client {
