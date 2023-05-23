@@ -17,16 +17,14 @@ class Game {
 
 class Player {
   constructor({ socket, params }) {
-      this.socket = socket;
+      // this.socket = socket;
       this.username = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], length: 3 });
       
     
       if (params.hasOwnProperty("username")) {
-        params.
+        this.username = params.username;
       }
   }
-  
-  
 }
 
 class Room {
@@ -46,7 +44,7 @@ class Room {
   }
   
   attachSocket(socket, params) {
-    this.socket[socket.id] = new Player(socket, params);
+    this.socket[socket.id] = new Player({ socket, params });
     
     this.#io.to(socket.id).emit("Room/Join", this);
     

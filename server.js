@@ -138,6 +138,13 @@ class Server {
             params: { socket }
           });
       });
+      
+      socket.on("Room/List", () => {
+          this.captureEvent({
+            event: "Room/Join",
+            params: { socket }
+          });
+      });
     }
 }
 
