@@ -98,6 +98,7 @@ class Server {
     let socket = this.parseSocket(params);
 
     if (navigator[0] === "Room") {
+      // Socket Joins Room
       if (navigator[1] === "Join") {
         // Returns available rooms from room object
         let room = this.getRandomRoom(params);
@@ -113,6 +114,7 @@ class Server {
         this.room[room.id] = room;
       }
 
+      // Socket creates room
       if (navigator[1] === "Create") {
         console.log(params);
 
@@ -122,13 +124,27 @@ class Server {
         this.room[room.id] = room;
       }
 
+      // Socket leaves room
       if (navigator[1] === "Leave") {
         let room = this.parseRoom(params);
-        
+
         if (roomHasInstanceOfSocket(room, socket)) {
           room.unattachSocket(socket);
         }
+        
+        // If Room is empty after 5 seconds, delete room
+        setTimeout(() => {
+          console.log("SELF DESTRUCT???")
+          
+          if (Object.keys(room.player).length === 0) {
+            console.log("Yessir 💥")
+            
+            delete this.room[room.id];
+          }
+        }, 5000)
       }
+      
+      console.log(this.room)
     }
 
     console.log(`Event "${event}" was captured on ${new Date().toString()}`);

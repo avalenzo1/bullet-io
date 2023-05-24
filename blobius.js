@@ -1,3 +1,4 @@
+const { Socket } = require("socket.io");
 const { v4 } = require('uuid');
 const { uniqueNamesGenerator, adjectives, colors, animals } = require('unique-names-generator');
 
@@ -76,6 +77,8 @@ class Room {
     this.capacity = 5;
   }
   
+  
+  
   get available() {
     // Checks if room is full
     return (Object.keys(this.player).length / this.capacity) < 1;
@@ -97,7 +100,7 @@ class Room {
     
       if (player instanceof Player) {
         socket.leave(this.id);
-        delete this.players[socket.id]; 
+        delete this.player[socket.id]; 
         
         console.log(`Socket ${socket.id} was unattached from room ${this.id}`); 
       }
