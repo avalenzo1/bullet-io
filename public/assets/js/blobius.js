@@ -5,12 +5,12 @@ class Game {
     
     this.canvas.style.border = "1px solid";
 
-//     // List of all rendered items
-//     this.playerList = [];
-//     this.itemList = [];
-//     this.pelletList = [];
+    // List of all rendered items
+    this.playerList = [];
+    this.itemList = [];
+    this.pelletList = [];
 
-//     this.showDebug = false;
+    this.showDebug = false;
   }
   
   startConnection() {
