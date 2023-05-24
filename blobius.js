@@ -99,6 +99,8 @@ class Room {
       socket.leave(this.id);
       delete this.socket[socket.id]; 
     }
+    
+    console.log(`Socket ${}`);
   }
 }
 

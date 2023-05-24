@@ -176,7 +176,7 @@ class Server {
     });
     
     socket.on("disconnect", () => {
-        delete this.socket[socket.id];
+        console.log("disconnect???")
     });
   }
 }
