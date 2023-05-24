@@ -51,7 +51,7 @@ class Game {
 
 class Player {
   constructor({ socket, params }) {
-      this.socket = socket;
+      this.id = socket.id;
       this.username = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], length: 3 });
       this.mass = 10;
       this.x = 0;
@@ -82,21 +82,25 @@ class Room {
   }
   
   attachSocket(socket, params) {
-    if (this.socket.hasOwnProperty(socket.id)) {
+    if (this.player.hasOwnProperty(socket.id)) {
       console.warn("Socket already exists");
     } else {
       socket.join(this.id);
       this.player[socket.id] = new Player({ socket, params });
+      this.#io.to(socket.id).emit("Room/Join", this);
     }
-    
-    this.#io.to(socket.id).emit("Room/Join", this);
-    
-    console.log(this.socket);
   }
   
   unattachSocket(socket) {
     if (socket instanceof Socket) {
-      
+      let player = this.player[socket.id];
+    
+      if (player instanceof Player) {
+        socket.leave(this.id);
+        delete this.players[socket.id]; 
+        
+        console.log(`Socket ${socket.id} was unattached from room ${this.id}`); 
+      }
     }
   }
 }
