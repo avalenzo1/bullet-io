@@ -76,15 +76,15 @@ class Room {
       console.warn("Socket already exists");
     } else {
       socket.join(this.id);
-    this.player[socket.id] = new Player({ socket, params });
-    this.#io.to(socket.id).emit("Room/Join", this);
+      this.player[socket.id] = new Player({ socket, params });
+      this.#io.to(socket.id).emit("Room/Join", this);
       
-      this.createLocalInstance(socket, params);
+      this.createLocalInstance(socket);
     }
   }
   
-  createLocalInstance(socket, params) {
-    
+  createLocalInstance(socket) {
+    // Creates onEvents for socket
     
     socket.on('Room/Tick', (controls) => {
       this.player[socket.id].controls = controls;

@@ -25,7 +25,7 @@ function handleCtx(ctx) {
 }
 
 class Game {
-  constructor() {
+  constructor(socket) {
     this.canvas = document.getElementById("canvas");
     this.ctx = this.canvas.getContext("2d");
     
@@ -42,7 +42,7 @@ class Game {
     this.pelletList = [];
 
     // Variables
-    this.showDebug = false;
+    this.showDebug = true;
     
     // Resizes Canvas
     this.requestId = null;
@@ -54,6 +54,7 @@ class Game {
     window.addEventListener("keydown", this.keyDown.bind(this));
     window.addEventListener("keyup", this.keyUp.bind(this));
     
+    this.playerId = socket.id;
     this.controls = {
       up: false,
       left: false,
@@ -66,7 +67,7 @@ class Game {
     switch (key) {
       case 'W':
       case 'w':
-      case 'ArrowTop':
+      case 'ArrowUp':
         this.controls.up = state;
         break;
       case 'A':
@@ -101,7 +102,7 @@ class Game {
   
   resizeCanvas() {
     this.ctx.canvas.width = window.innerWidth;
-    this.ctx.canvas.height = window.innerWidth;
+    this.ctx.canvas.height = window.innerHeight;
   }
   
   startConnection() {
@@ -140,7 +141,7 @@ class Client {
   constructor(socket) {
     this.socket = socket;
     this.room = null;
-    this.game = new Game();
+    this.game = new Game(socket);
   }
 
   listen() {

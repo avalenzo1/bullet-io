@@ -21,6 +21,8 @@ $("#new-game").on("submit", function (e) {
     event: "Room/Join",
     params: { formData },
   });
+  
+  $(".modal").fadeOut();
 });
 
 $(document).ready(function () {
