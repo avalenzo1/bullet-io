@@ -9,10 +9,22 @@ class Camera {
   } 
 }
 
+function handleCtx(ctx) {
+  ctx.fillText = (string, x, y) => {
+    let stringList = string.split("\n");
+    
+    
+  }
+  
+  return ctx;
+}
+
 class Game {
   constructor() {
     this.canvas = document.getElementById("canvas");
     this.ctx = this.canvas.getContext("2d");
+    
+    this.ctx = handleCtx(ctx);
 
     // Handles objects
     this.camera = new Camera();
@@ -30,6 +42,20 @@ class Game {
     
     window.addEventListener("DOMContentLoaded", this.resizeCanvas.bind(this));
     window.addEventListener("resize", this.resizeCanvas.bind(this));
+    
+    // Handles Key Events
+    window.addEventListener("keydown", this.keyDown.bind(this));
+    window.addEventListener("keyup", this.keyUp.bind(this));
+  }
+  
+  keyDown(e) {
+    if (e.shiftKey) {
+      this.showDebug = !this.showDebug;
+    }
+  }
+  
+  keyUp(e) {
+    
   }
   
   resizeCanvas() {
@@ -51,11 +77,13 @@ class Game {
 
     ctx.clearRect(0,0,canvas.width, canvas.height);
     
-    ctx.fillStyle = "#000";
+    ctx.fillStyle = "#fdfdfd";
     ctx.fillRect(0,0,canvas.width, canvas.height);
     
-    ctx.fillStyle = "#fff";
-    ctx.fillText(Math.random(), 12, 12);
+    if (this.showDebug) {
+      ctx.fillStyle = "#000";
+      ctx.fillText(`Camera: ${JSON.stringify(this.camera)}`, 12, 12);
+    }
     
     this.requestId = window.requestAnimationFrame(this.render.bind(this));
   }
