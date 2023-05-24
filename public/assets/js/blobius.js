@@ -2,16 +2,22 @@ class Game {
   constructor() {
     this.canvas = document.getElementById("canvas");
     this.ctx = this.canvas.getContext("2d");
+    
+    this.canvas.style.border = "1px solid";
 
-    // List of all rendered items
-    this.playerList = [];
-    this.itemList = [];
-    this.pelletList = [];
+//     // List of all rendered items
+//     this.playerList = [];
+//     this.itemList = [];
+//     this.pelletList = [];
 
-    this.showDebug = false;
+//     this.showDebug = false;
   }
   
-  tick(room) {
+  startConnection() {
+    
+  }
+  
+  endConnection() {
     
   }
 
@@ -30,19 +36,23 @@ class Client {
   listen() {
     // Creates onEvents for socket
 
-    this.socket.on("disconnect", function () {
+    this.socket.on("disconnect", () => {
       console.log("Socket was disconnected");
     });
 
-    this.socket.on("connect", function () {
+    this.socket.on("connect", () => {
       console.log("Socket was connected");
     });
 
-    this.socket.on("Room/Join", function (room) {
-      
+    this.socket.on("Room/Join", (room) => {
+      this.game.startConnection();
     });
     
-    this.socket.on("Room/Tick", function (room) {
+    this.socket.on("Room/Leave", (room) => {
+      this.game.endConnection();
+    });
+    
+    this.socket.on("Room/Tick", (room) => {
       
     });
   }

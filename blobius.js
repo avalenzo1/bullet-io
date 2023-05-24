@@ -73,7 +73,7 @@ class Room {
     this.id = UUID();
     this.name = name || `Room ${uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], length: 3 })}`;
     this.socket = {};
-    this.capacity = 100;
+    this.capacity = 5;
   }
   
   get available() {
