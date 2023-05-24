@@ -2,8 +2,8 @@ const { Socket } = require("socket.io");
 const { Room } = require("./blobius");
 
 function roomHasInstanceOfSocket(room, socket) {
-  if (room === undefined || !socket === undefined) return false;
-  if (room.socket[socket.id] !== undefined) return true;
+  if (!(room instanceof Room) || !(socket instanceof Socket)) return false;
+  if (room.player[socket.id] !== undefined) return true;
 }
 
 class Server {
@@ -31,18 +31,17 @@ class Server {
     });
 
     this.io.of("/").adapter.on("leave-room", (room, socket) => {
-      
-      console.log(roomHasInstanceOfSocket(this.room[room], this.socket[socket]))
-      
-      this.captureEvent({
-        event: 'Server/Room/Leave',
-        params: {
-          socket: this.socket[socket],
-          room: this.room[room]
-        }
-      });
+      if (roomHasInstanceOfSocket(this.room[room], this.socket[socket])) {
+        this.captureEvent({
+          event: 'Room/Leave',
+          params: {
+            socket: this.socket[socket],
+            room: this.room[room]
+          }
+        });
 
-      console.log(`socket ${socket} has left room ${room}`);
+        console.log(`socket ${socket} has left room ${room}`);
+      }
     });
   }
 
@@ -124,15 +123,10 @@ class Server {
       }
 
       if (navigator[1] === "Leave") {
-        let room = this.parseRoom(room);
-        
-        console.log("Bruh")
-        console.log(room);
-        console.log(socket);
-        console.log(roomHasInstanceOfSocket(room, socket))
+        let room = this.parseRoom(params);
         
         if (roomHasInstanceOfSocket(room, socket)) {
-          console.log("AISFIASJFIOASFOISIF")
+          room.unattachSocket(socket);
         }
       }
     }
@@ -180,7 +174,7 @@ class Server {
     });
     
     socket.on("disconnect", () => {
-        console.log("disconnect???")
+        console.log(`${socket.id} disconnected`)
     });
   }
 }
