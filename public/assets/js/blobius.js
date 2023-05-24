@@ -1,3 +1,9 @@
+class Camera {
+  constructor() {
+    
+  }
+}
+
 class Game {
   constructor() {
     this.canvas = document.getElementById("canvas");
@@ -6,6 +12,7 @@ class Game {
     this.canvas.style.border = "1px solid";
 
     // List of all rendered items
+    this.camera = new Camera();
     this.playerList = [];
     this.itemList = [];
     this.pelletList = [];
@@ -16,20 +23,22 @@ class Game {
   
   startConnection() {
     this.canvas.style.borderColor = "blue";
-    this.requestId = window.requestAnimationFrame(this.render);
+    this.requestId = window.requestAnimationFrame(this.render.bind(this));
   }
   
   endConnection() {
     this.canvas.style.borderColor = "blue";
-    this.requestId = window.cancelAnimationFrame(this.render);
+    this.requestId = window.cancelAnimationFrame(this.render.bind(this));
   }
 
   render() {
     let ctx = this.ctx;
+    let canvas = this.canvas;
 
+    ctx.clearRect(0,0,canvas.width, canvas.height);
     ctx.fillText(Math.random(), 12, 12);
     
-    this.render();
+    this.requestId = window.requestAnimationFrame(this.render.bind(this));
   }
 }
 
