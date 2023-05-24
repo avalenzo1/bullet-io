@@ -104,8 +104,11 @@ class Game {
     this.ctx.canvas.height = window.innerWidth;
   }
   
-  startConnection(room) {
+  startConnection() {
     this.requestId = window.requestAnimationFrame(this.render.bind(this));
+  }
+  
+  tick(room) {
     this.room = room;
   }
   
@@ -152,15 +155,19 @@ class Client {
     });
 
     this.socket.on("Room/Join", (room) => {
-      this.game.startConnection(room);
+      this.game.startConnection();
+      
+      this.game.tick(room);
     });
     
     this.socket.on("Room/Leave", () => {
       this.game.endConnection();
     });
     
-    this.socket.on("Room/Tick", () => {
-      this.socket.emit("Room/Tick", this.game.controls)
+    this.socket.on("Room/Tick", (room) => {
+      this.game.tick(room);
+      
+      this.socket.emit("Room/Tick", this.game.controls);
     });
   }
 

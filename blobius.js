@@ -11,8 +11,8 @@ function UID() {
 }
 
 class Ticker {
-  constructor() {
-    this.delay = 50;
+  constructor(delay) {
+    this.delay = (delay > 50) ? delay : 50;
     this.intervalId = null;
   }
   
@@ -38,6 +38,7 @@ class Player {
       this.y = 0;
       this.xVel = 0;
       this.yVel = 0;
+      this.controls;
       this.theta = 0;
     
       this.username = params.username || "Anonymous";
@@ -46,6 +47,7 @@ class Player {
 
 class Room {
   #io;
+  #ticker;
   
   constructor(io, name, capacity = 100) {
     this.#io = io;
@@ -53,13 +55,15 @@ class Room {
     this.name = name || `${uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], length: 3 })}`;
     this.player = {};
     this.capacity = 5;
-    this.ticker = new Ticker();
+    this.#ticker = new Ticker(1000);
     
-    this.ticker.step = () => {
+    this.#ticker.step = () => {
       console.log("heyyaaa")
+      
+      this.#io.to(this.id).emit("Room/Join", this);
     };
     
-    this.ticker.start();
+    this.#ticker.start();
   }
   
   get available() {
@@ -72,9 +76,19 @@ class Room {
       console.warn("Socket already exists");
     } else {
       socket.join(this.id);
-      this.player[socket.id] = new Player({ socket, params });
-      this.#io.to(socket.id).emit("Room/Join", this);
+    this.player[socket.id] = new Player({ socket, params });
+    this.#io.to(socket.id).emit("Room/Join", this);
+      
+      this.createLocalInstance(socket, params);
     }
+  }
+  
+  createLocalInstance(socket, params) {
+    
+    
+    socket.on('Room/Tick', (controls) => {
+      this.player[socket.id].controls = controls;
+    });
   }
   
   unattachSocket(socket) {
@@ -91,7 +105,7 @@ class Room {
   }
   
   selfDestruct() {
-    this.ticker.stop();
+    this.#ticker.stop();
   }
 }
 
