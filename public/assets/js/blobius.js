@@ -11,18 +11,25 @@ class Game {
     this.pelletList = [];
 
     this.showDebug = false;
+    this.requestId = null;
   }
   
   startConnection() {
-    
+    this.canvas.style.borderColor = "blue";
+    this.requestId = window.requestAnimationFrame(this.render);
   }
   
   endConnection() {
-    
+    this.canvas.style.borderColor = "blue";
+    this.requestId = window.cancelAnimationFrame(this.render);
   }
 
   render() {
+    let ctx = this.ctx;
+
+    ctx.fillText(Math.random(), 12, 12);
     
+    this.render();
   }
 }
 
