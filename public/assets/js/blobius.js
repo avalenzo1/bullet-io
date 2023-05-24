@@ -52,10 +52,35 @@ class Game {
     window.addEventListener("keyup", this.keyUp.bind(this));
     
     this.controls = {
-      top: false,
+      up: false,
       left: false,
       right: false,
       bottom: false
+    }
+  }
+  
+  setControls(key, state) { 
+    switch (key) {
+      case 'W':
+      case 'w':
+      case 'ArrowTop':
+        this.controls.up = state;
+        break;
+      case 'A':
+      case 'a':
+      case 'ArrowLeft':
+        this.controls.left = state;
+        break;
+      case 'D':
+      case 'd':
+      case 'ArrowRight':
+        this.controls.right = state;
+        break;
+      case 'S':
+      case 's':
+      case 'ArrowDown':
+        this.controls.bottom = state;
+        break;
     }
   }
   
@@ -64,53 +89,11 @@ class Game {
       this.showDebug = !this.showDebug;
     }
     
-    switch (e.key) {
-      case 'W':
-      case 'w':
-      case 'ArrowTop':
-        this.controls.top = true;
-        break;
-      case 'A':
-      case 'a':
-      case 'ArrowLeft':
-        this.controls.left = true;
-        break;
-      case 'R':
-      case 'r':
-      case 'ArrowRight':
-        this.controls.right = true;
-        break;
-      case 'S':
-      case 's':
-      case 'ArrowDown':
-        this.controls.down = true;
-        break;
-    }
+    this.setControls(e.key, true);
   }
   
   keyUp(e) {
-    switch (e.key) {
-      case 'W':
-      case 'w':
-      case 'ArrowTop':
-        this.controls.top = false;
-        break;
-      case 'A':
-      case 'a':
-      case 'ArrowLeft':
-        this.controls.left = false;
-        break;
-      case 'R':
-      case 'r':
-      case 'ArrowRight':
-        this.controls.right = false;
-        break;
-      case 'S':
-      case 's':
-      case 'ArrowDown':
-        this.controls.down = false;
-        break;
-    }
+    this.setControls(e.key, false);
   }
   
   resizeCanvas() {
@@ -139,7 +122,7 @@ class Game {
     
     if (this.showDebug) {
       ctx.fillStyle = "#000";
-      ctx.fillMultiLineText(`Camera: ${JSON.stringify(this.camera, null, " ")}\n\nPlayer: ${JSON.stringify(this.controls, null, " ")}`, 0, 16);
+      ctx.fillMultiLineText(`Camera: ${JSON.stringify(this.camera, null, "  ")}\n\nPlayer: ${JSON.stringify(this.controls, null, "  d")}`, 0, 16);
     }
     
     this.requestId = window.requestAnimationFrame(this.render.bind(this));
@@ -165,14 +148,14 @@ class Client {
     });
 
     this.socket.on("Room/Join", (room) => {
-      this.game.startConnection();
+      this.game.startConnection(room);
     });
     
-    this.socket.on("Room/Leave", (room) => {
+    this.socket.on("Room/Leave", () => {
       this.game.endConnection();
     });
     
-    this.socket.on("Room/Tick", (room) => {
+    this.socket.on("Room/Tick", () => {
       this.socket.emit("Room/Tick", this.game.controls)
     });
   }
