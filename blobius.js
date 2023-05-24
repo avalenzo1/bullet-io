@@ -16,8 +16,10 @@ class Ticker {
     this.intervalId = null;
   }
   
-  start(callback) {
-    this.intervalId = setInteval(callback, this.interval);
+  start() {
+    this.intervalId = setInterval(() => {
+      this.step();
+    }, this.interval);
   }
   
   stop() {
@@ -51,7 +53,11 @@ class Room {
     this.capacity = 5;
     this.ticker = new Ticker(50);
     
+    this.ticker.step = () => {
+      console.log("heyyaaa")
+    };
     
+    this.ticker.start();
   }
   
   get available() {
@@ -80,6 +86,10 @@ class Room {
         console.log(`Socket ${socket.id} was unattached from room ${this.id}`); 
       }
     }
+  }
+  
+  selfDestruct() {
+    this.ticker.stop();
   }
 }
 

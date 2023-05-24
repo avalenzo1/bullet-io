@@ -138,7 +138,7 @@ class Server {
           
           if (Object.keys(room.player).length === 0) {
             console.log("Yessir 💥")
-            
+            room.selfDestruct();
             delete this.room[room.id];
           }
         }, 5000)
