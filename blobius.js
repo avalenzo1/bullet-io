@@ -10,27 +10,22 @@ function UID() {
     return Math.random().toString(36).slice(-6).toUpperCase();
 }
 
-class Arena {
-  constructor() {
-    
-  }
-}
-
 class PelletSystem {
   constructor() {
-    
+    this.pelletList = [];
+    this.maxPellets = 10000;
   }
 }
 
 class PlayerSystem {
   constructor() {
-    
+    this.playerList = [];
   }
 }
 
 class ItemSystem {
   constructor() {
-    
+    this.array = [];
   }
 }
 
@@ -76,8 +71,6 @@ class Room {
     this.player = {};
     this.capacity = 5;
   }
-  
-  
   
   get available() {
     // Checks if room is full

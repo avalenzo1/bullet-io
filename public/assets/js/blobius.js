@@ -1,7 +1,12 @@
 class Camera {
   constructor() {
-    
+    this.x = 0;
+    this.y = 0;
   }
+  
+  focus(object) {
+
+  } 
 }
 
 class Game {
@@ -9,13 +14,18 @@ class Game {
     this.canvas = document.getElementById("canvas");
     this.ctx = this.canvas.getContext("2d");
 
-    // List of all rendered items
+    // Handles objects
     this.camera = new Camera();
+    
+    // List of all rendered items
     this.playerList = [];
     this.itemList = [];
     this.pelletList = [];
 
+    // Variables
     this.showDebug = false;
+    
+    // Resizes Canvas
     this.requestId = null;
     
     window.addEventListener("DOMContentLoaded", this.resizeCanvas.bind(this));
@@ -78,7 +88,7 @@ class Client {
     });
     
     this.socket.on("Room/Tick", (room) => {
-      
+      this.socket.emit("Room/Tick", this.game.controls)
     });
   }
 
