@@ -11,19 +11,21 @@ function UID() {
 }
 
 class Ticker {
-  constructor(interval) {
-    this.interval = interval;
+  constructor() {
+    this.delay = 50;
     this.intervalId = null;
   }
   
   start() {
-    this.intervalId = setInterval(() => {
-      this.step();
-    }, this.interval);
+    console.log(this)
+    if (typeof this.step === 'function' && typeof this.delay === 'number') {
+      setInterval(this.step, this.delay);
+    }
+    
   }
   
   stop() {
-    clearInterval(this.intervalId);
+    clearInterval(this.timeoutId);
   }
 }
 
@@ -51,7 +53,7 @@ class Room {
     this.name = name || `${uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], length: 3 })}`;
     this.player = {};
     this.capacity = 5;
-    this.ticker = new Ticker(50);
+    this.ticker = new Ticker();
     
     this.ticker.step = () => {
       console.log("heyyaaa")
