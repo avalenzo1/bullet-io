@@ -2,10 +2,11 @@ class Camera {
   constructor() {
     this.x = 0;
     this.y = 0;
+    this.θ = 0;
   }
   
   focus(object) {
-
+    
   } 
 }
 
@@ -32,6 +33,8 @@ class Game {
 
     // Handles objects
     this.camera = new Camera();
+    
+    this.room = null;
     
     // List of all rendered items
     this.playerList = [];
@@ -101,8 +104,9 @@ class Game {
     this.ctx.canvas.height = window.innerWidth;
   }
   
-  startConnection() {
+  startConnection(room) {
     this.requestId = window.requestAnimationFrame(this.render.bind(this));
+    this.room = room;
   }
   
   endConnection() {
@@ -122,7 +126,7 @@ class Game {
     
     if (this.showDebug) {
       ctx.fillStyle = "#000";
-      ctx.fillMultiLineText(`Camera: ${JSON.stringify(this.camera, null, "  ")}\n\nPlayer: ${JSON.stringify(this.controls, null, "  d")}`, 0, 16);
+      ctx.fillMultiLineText(`Camera: ${JSON.stringify(this.camera, null, "  ")}\n\nPlayer: ${JSON.stringify(this.controls, null, " ")}\n\Room: ${JSON.stringify(this.room, null, " ")}`, 0, 16);
     }
     
     this.requestId = window.requestAnimationFrame(this.render.bind(this));

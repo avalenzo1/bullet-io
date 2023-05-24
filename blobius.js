@@ -10,38 +10,18 @@ function UID() {
     return Math.random().toString(36).slice(-6).toUpperCase();
 }
 
-class PelletSystem {
-  constructor() {
-    this.pelletList = [];
-    this.maxPellets = 10000;
+class Ticker {
+  constructor(interval) {
+    this.interval = interval;
+    this.intervalId = null;
   }
-}
-
-class PlayerSystem {
-  constructor() {
-    this.playerList = [];
+  
+  start(callback) {
+    this.intervalId = setInteval(callback, this.interval);
   }
-}
-
-class ItemSystem {
-  constructor() {
-    this.array = [];
-  }
-}
-
-class CollisionDetectionEngine {
-  constructor() {
-    
-  }
-}
-
-class Game {
-  constructor() {
-    this.arena = new Arena();
-    this.pelletSystem = new PelletSystem();
-    this.playerSystem = new PlayerSystem();
-    this.itemSystem = new ItemSystem();
-    this.collisionDetectionEngine = new CollisionDetectionEngine();
+  
+  stop() {
+    clearInterval(this.intervalId);
   }
 }
 
@@ -49,15 +29,14 @@ class Player {
   constructor({ socket, params }) {
       this.id = socket.id;
       this.username = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], length: 3 });
-      this.mass = 10;
+      this.hp = 100;
       this.x = 0;
       this.y = 0;
       this.xVel = 0;
       this.yVel = 0;
+      this.theta = 0;
     
-      if (params.hasOwnProperty("username")) {
-        this.username = params.username;
-      }
+      this.username = params.username || "Anonymous";
   }
 }
 
@@ -67,9 +46,12 @@ class Room {
   constructor(io, name, capacity = 100) {
     this.#io = io;
     this.id = UUID();
-    this.name = name || `Room ${uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], length: 3 })}`;
+    this.name = name || `${uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], length: 3 })}`;
     this.player = {};
     this.capacity = 5;
+    this.ticker = new Ticker(50);
+    
+    
   }
   
   get available() {
