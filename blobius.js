@@ -51,9 +51,9 @@ class Game {
 
 class Player {
   constructor({ socket, params }) {
-      // this.socket = socket;
+      this.socket = socket;
       this.username = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], length: 3 });
-      this.mass = 0;
+      this.mass = 10;
       this.x = 0;
       this.y = 0;
       this.xVel = 0;
@@ -72,13 +72,13 @@ class Room {
     this.#io = io;
     this.id = UUID();
     this.name = name || `Room ${uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], length: 3 })}`;
-    this.socket = {};
+    this.player = {};
     this.capacity = 5;
   }
   
   get available() {
     // Checks if room is full
-    return (Object.keys(this.socket).length / this.capacity) < 1;
+    return (Object.keys(this.player).length / this.capacity) < 1;
   }
   
   attachSocket(socket, params) {
@@ -86,7 +86,7 @@ class Room {
       console.warn("Socket already exists");
     } else {
       socket.join(this.id);
-      this.socket[socket.id] = new Player({ socket, params });
+      this.player[socket.id] = new Player({ socket, params });
     }
     
     this.#io.to(socket.id).emit("Room/Join", this);
@@ -96,11 +96,8 @@ class Room {
   
   unattachSocket(socket) {
     if (socket instanceof Socket) {
-      socket.leave(this.id);
-      delete this.socket[socket.id]; 
+      
     }
-    
-    console.log(`Socket ${socket.id} was unattached from rooom ${this.id}`);
   }
 }
 

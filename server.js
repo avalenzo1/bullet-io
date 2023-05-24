@@ -32,6 +32,7 @@ class Server {
 
     this.io.of("/").adapter.on("leave-room", (room, socket) => {
       
+      console.log(roomHasInstanceOfSocket(this.room[room], this.socket[socket]))
       
       this.captureEvent({
         event: 'Server/Room/Leave',
