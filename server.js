@@ -31,6 +31,8 @@ class Server {
     });
 
     this.io.of("/").adapter.on("leave-room", (room, socket) => {
+      
+      
       this.captureEvent({
         event: 'Server/Room/Leave',
         params: {
@@ -123,15 +125,16 @@ class Server {
       if (navigator[1] === "Leave") {
         let room = this.parseRoom(room);
         
+        console.log("Bruh")
+        console.log(room);
+        console.log(socket);
+        console.log(roomHasInstanceOfSocket(room, socket))
+        
         if (roomHasInstanceOfSocket(room, socket)) {
           console.log("AISFIASJFIOASFOISIF")
         }
-        
-        console.log(params.socket.id);
       }
     }
-
-    console.log(this.room);
 
     console.log(`Event "${event}" was captured on ${new Date().toString()}`);
   }

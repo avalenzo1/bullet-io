@@ -100,7 +100,7 @@ class Room {
       delete this.socket[socket.id]; 
     }
     
-    console.log(`Socket ${}`);
+    console.log(`Socket ${socket.id} was unattached from rooom ${this.id}`);
   }
 }
 
