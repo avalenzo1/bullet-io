@@ -10,10 +10,14 @@ class Camera {
 }
 
 function handleCtx(ctx) {
-  ctx.fillText = (string, x, y) => {
-    let stringList = string.split("\n");
+  ctx.fillMultiLineText = (_string, x, y, gap = 2) => {
+    let stringList = _string.split("\n");
     
+    console.log(ctx.fontSize)
     
+    for (let i = 0; i < stringList.length; i++) {
+      ctx.fillText(stringList[i], x, y + (i * ctx.fontSize) + gap);
+    }
   }
   
   return ctx;
@@ -24,7 +28,7 @@ class Game {
     this.canvas = document.getElementById("canvas");
     this.ctx = this.canvas.getContext("2d");
     
-    this.ctx = handleCtx(ctx);
+    this.ctx = handleCtx(this.ctx);
 
     // Handles objects
     this.camera = new Camera();
@@ -82,7 +86,7 @@ class Game {
     
     if (this.showDebug) {
       ctx.fillStyle = "#000";
-      ctx.fillText(`Camera: ${JSON.stringify(this.camera)}`, 12, 12);
+      ctx.fillMultiLineText(`Camera: ${JSON.stringify(this.camera)}\n Hi`, 12, 12);
     }
     
     this.requestId = window.requestAnimationFrame(this.render.bind(this));
