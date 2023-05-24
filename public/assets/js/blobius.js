@@ -13,10 +13,10 @@ function handleCtx(ctx) {
   ctx.fillMultiLineText = (_string, x, y, gap = 2) => {
     let stringList = _string.split("\n");
     
-    console.log(ctx.fontSize)
+    const match = /(?<value>\d+\.?\d*)/;
     
     for (let i = 0; i < stringList.length; i++) {
-      ctx.fillText(stringList[i], x, y + (i * ctx.fontSize) + gap);
+      ctx.fillText(stringList[i], x, y + (i * ctx.font.match(match)[0]) + gap);
     }
   }
   
@@ -50,16 +50,67 @@ class Game {
     // Handles Key Events
     window.addEventListener("keydown", this.keyDown.bind(this));
     window.addEventListener("keyup", this.keyUp.bind(this));
+    
+    this.controls = {
+      top: false,
+      left: false,
+      right: false,
+      bottom: false
+    }
   }
   
   keyDown(e) {
     if (e.shiftKey) {
       this.showDebug = !this.showDebug;
     }
+    
+    switch (e.key) {
+      case 'W':
+      case 'w':
+      case 'ArrowTop':
+        this.controls.top = true;
+        break;
+      case 'A':
+      case 'a':
+      case 'ArrowLeft':
+        this.controls.left = true;
+        break;
+      case 'R':
+      case 'r':
+      case 'ArrowRight':
+        this.controls.right = true;
+        break;
+      case 'S':
+      case 's':
+      case 'ArrowDown':
+        this.controls.down = true;
+        break;
+    }
   }
   
   keyUp(e) {
-    
+    switch (e.key) {
+      case 'W':
+      case 'w':
+      case 'ArrowTop':
+        this.controls.top = false;
+        break;
+      case 'A':
+      case 'a':
+      case 'ArrowLeft':
+        this.controls.left = false;
+        break;
+      case 'R':
+      case 'r':
+      case 'ArrowRight':
+        this.controls.right = false;
+        break;
+      case 'S':
+      case 's':
+      case 'ArrowDown':
+        this.controls.down = false;
+        break;
+    }
   }
   
   resizeCanvas() {
@@ -84,9 +135,11 @@ class Game {
     ctx.fillStyle = "#fdfdfd";
     ctx.fillRect(0,0,canvas.width, canvas.height);
     
+    ctx.font = "16px Monospace"
+    
     if (this.showDebug) {
       ctx.fillStyle = "#000";
-      ctx.fillMultiLineText(`Camera: ${JSON.stringify(this.camera)}\n Hi`, 12, 12);
+      ctx.fillMultiLineText(`Camera: ${JSON.stringify(this.camera, null, " ")}\n\nPlayer: ${JSON.stringify(this.controls, null, " ")}`, 0, 16);
     }
     
     this.requestId = window.requestAnimationFrame(this.render.bind(this));
