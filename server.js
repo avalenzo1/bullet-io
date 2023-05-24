@@ -32,8 +32,11 @@ class Server {
 
     this.io.of("/").adapter.on("leave-room", (room, socket) => {
       this.captureEvent({
-        event: "Room/Leave",
-        params: { socket, room: this.room[room] },
+        event: 'Server/Room/Leave',
+        params: {
+          socket: this.socket[socket],
+          room: this.room[room]
+        }
       });
 
       console.log(`socket ${socket} has left room ${room}`);
@@ -93,14 +96,11 @@ class Server {
     let socket = this.parseSocket(params);
 
     if (navigator[0] === "Room") {
-      let room;
-
       if (navigator[1] === "Join") {
         // Returns available rooms from room object
-        room = this.getRandomRoom(params);
+        let room = this.getRandomRoom(params);
 
-        // If returned room is null, creates one
-
+        // If returned room is empty, create a room
         if (!(room instanceof Room)) {
           room = new Room(this.io);
         }
@@ -121,6 +121,12 @@ class Server {
       }
 
       if (navigator[1] === "Leave") {
+        let room = this.parseRoom(room);
+        
+        if (roomHasInstanceOfSocket(room, socket)) {
+          console.log("AISFIASJFIOASFOISIF")
+        }
+        
         console.log(params.socket.id);
       }
     }
@@ -167,6 +173,10 @@ class Server {
         event: "Room/Join",
         params: { socket },
       });
+    });
+    
+    socket.on("disconnect", () => {
+        delete this.socket[socket.id];
     });
   }
 }
