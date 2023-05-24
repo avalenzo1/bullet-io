@@ -5,17 +5,6 @@ import { formToJSON } from "./tool-box.js";
 const socket = io();
 const client = new Client(socket);
 
-// Resizes Canvas
-const canvas = document.getElementById("canvas");
-
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-
-window.addEventListener("DOMContentLoaded", resizeCanvas);
-window.addEventListener("resize", resizeCanvas);
-
 // Populates and Handles Form Data
 
 $("#new-game").on("submit", function (e) {

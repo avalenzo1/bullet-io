@@ -8,8 +8,6 @@ class Game {
   constructor() {
     this.canvas = document.getElementById("canvas");
     this.ctx = this.canvas.getContext("2d");
-    
-    this.canvas.style.border = "1px solid";
 
     // List of all rendered items
     this.camera = new Camera();
@@ -19,15 +17,21 @@ class Game {
 
     this.showDebug = false;
     this.requestId = null;
+    
+    window.addEventListener("DOMContentLoaded", this.resizeCanvas.bind(this));
+    window.addEventListener("resize", this.resizeCanvas.bind(this));
+  }
+  
+  resizeCanvas() {
+    this.ctx.canvas.width = window.innerWidth;
+    this.ctx.canvas.height = window.innerWidth;
   }
   
   startConnection() {
-    this.canvas.style.borderColor = "blue";
     this.requestId = window.requestAnimationFrame(this.render.bind(this));
   }
   
   endConnection() {
-    this.canvas.style.borderColor = "blue";
     this.requestId = window.cancelAnimationFrame(this.render.bind(this));
   }
 
@@ -36,6 +40,11 @@ class Game {
     let canvas = this.canvas;
 
     ctx.clearRect(0,0,canvas.width, canvas.height);
+    
+    ctx.fillStyle = "#000";
+    ctx.fillRect(0,0,canvas.width, canvas.height);
+    
+    ctx.fillStyle = "#fff";
     ctx.fillText(Math.random(), 12, 12);
     
     this.requestId = window.requestAnimationFrame(this.render.bind(this));
