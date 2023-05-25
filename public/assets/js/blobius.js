@@ -3,11 +3,27 @@ class Camera {
     this.x = 0;
     this.y = 0;
     this.θ = 0;
+    this.focus;
   }
   
-  focus(object) {
-    
-  } 
+  focusOn(object) {
+    this.focus = object;
+  }
+  
+  getCoordinates(x, y) {
+    let focusX = 0;
+    let focusY = 0;
+
+    if (this.focus) {
+      focusX = this.focus.x;
+      focusY = this.focus.y;
+    }
+
+    return {
+      x: this.x + x - this.focusX,
+      y: this.y + y - this.focusY,
+    };
+  }
 }
 
 function handleCtx(ctx) {
@@ -25,7 +41,7 @@ function handleCtx(ctx) {
 }
 
 class Game {
-  constructor() {
+  constructor(socket) {
     this.canvas = document.getElementById("canvas");
     this.ctx = this.canvas.getContext("2d");
     
@@ -57,7 +73,7 @@ class Game {
     // Handles Mousemove Events
     window.addEventListener("mousemove", this.mouseMove.bind(this));
     
-    this.playerId;
+    this.playerId = socket.id;
     this.controls = {
       up: false,
       left: false,
@@ -65,12 +81,7 @@ class Game {
       down: false
     }
   }
-  
-  attachSocket(socket) {
-    this.socket = socket;
-    this.playerId = this.socket.id;
-  }
-  
+
   setControls(key, state) { 
     switch (key) {
       case 'W':
@@ -154,6 +165,11 @@ class Game {
       for (let playerId of Object.keys(this.room.player)) {
         let player = this.room.player[playerId];
         
+        if (player === this.room.player[this.playerId]) {
+          
+        } else {
+          let coordinates = this.camera.getCoordinates(player.x, player.y);
+        }
         ctx.fillStyle = "#333";
         ctx.fillText(`${player.hp} / ${player.hpCapacity} hp`, player.x, player.y)
         ctx.fillStyle = player.color;
@@ -199,7 +215,7 @@ class Client {
 
     this.socket.on("connect", () => {
       console.log("Socket was connected");
-      this.game.attachSocket(this.socket);
+      this.game.
     });
 
     this.socket.on("Room/Join", (room) => {

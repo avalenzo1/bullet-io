@@ -46,6 +46,7 @@ class Player {
       this.y = 0;
       this.w = 50;
       this.h = 100;
+      this.mass = 50;
     
       // Theta
       this.#θ = 0;
