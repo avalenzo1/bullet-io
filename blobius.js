@@ -248,13 +248,14 @@ class Room {
   checkForCollision() {
     let elements = Object.entries(this.player);
     
-    
     for (let i = 0; i < elements.length; i++) {
-      let obj1 = elements[i - 1]; // element i
-      for (let i = 0; i < elements.length; i++) {
-
+      let obj1 = elements[i]; // element i
+      
+      for (let j = 0; j < elements.length; j++) {
+        if (i == j)
+          continue;
         
-        let obj2 = elements[i];// element j
+        let obj2 = elements[j];// element j
 
         if (
           obj1[1].x < obj2[1].x + obj2[1].w &&
