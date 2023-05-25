@@ -15,6 +15,12 @@ function UID() {
   return Math.random().toString(36).slice(-6).toUpperCase();
 }
 
+function updateAll(array) {
+  if (typeof array === 'array' && array.length > 0) {
+    
+  }
+}
+
 class Ticker {
   constructor(delay) {
     this.delay = delay > 5 ? delay : 50;
@@ -74,8 +80,6 @@ class GameObject {
 }
 
 class Bullet extends GameObject {
-  #ticker;
-  
   constructor(x, y, θ) {
     super(x,y,10,10);
     
@@ -85,27 +89,17 @@ class Bullet extends GameObject {
     
     this.θ = θ;
     this.range = 5;
-    this.#ticker = new Ticker(50);
-    
-    this.#ticker.step = () => {
-      this.velocity.x += Math.cos(this.θ) * this.range;
-      this.velocity.y += Math.sin(this.θ) * this.range;
-      
-      this.velocity.y += this.acceleration.y / 5;
-      
-      this.x += this.velocity.x;
-      this.y += this.velocity.y;
-
-      this.velocity.x *= this.µ;
-      this.velocity.y *= this.µ;
-    }
-    
-    this.#ticker.start();
   }
   
-  selfDestruct() {
-    this.showExplosion = true;
-    this.#ticker.stop();
+  step() {
+    this.velocity.x += Math.cos(this.θ) * this.range;
+    this.velocity.y += Math.sin(this.θ) * this.range;
+
+    this.x += this.velocity.x;
+    this.y += this.velocity.y;
+
+    this.velocity.x *= this.µ;
+    this.velocity.y *= this.µ;
   }
 }
 
@@ -154,6 +148,8 @@ class Player extends GameObject {
       }
 
       this.velocity.y += this.acceleration.y;
+      
+      arrayStep(this.bullets);
       
       if (this.controls.shoot) {
         let bullet = new Bullet(this.x + this.w / 2, this.y + this.h / 2, this.controls.θ);
