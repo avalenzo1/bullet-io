@@ -93,7 +93,7 @@ class Game {
     this.assets = {};
     
     this.assets.bullet = new Image();
-    this.assets.bullet.src = "https://static.wikia.nocookie.net/villains/images/7/7a/Bullet.png/revision/latest/scale-to-width-down/260?cb=20200617045537"
+    this.assets.bullet.src = "https://media.istockphoto.com/id/1214905793/photo/foam-dart-bullet-for-gun-toy-isolated-on-white-background.jpg?s=612x612&w=0&k=20&c=bHRMZ2cglTEdG3QGN7y16sMZq-jq0Ukt7ZyGTVbyMBA="
   }
 
   setControls(key, state) { 
@@ -207,7 +207,7 @@ class Game {
         if (player.bullets.length > 0) {
           for (let bullet of player.bullets) {
             let bulletCoordinates = camera.getCoordinates(bullet.x, bullet.y)
-            ctx.drawImage(this.assets.bullet, bulletCoordinates.x, bulletCoordinates.y, bullet.w, bullet.h);
+            ctx.fillRect(bulletCoordinates.x, bulletCoordinates.y, bullet.w, bullet.h);
           }
         }
       }
