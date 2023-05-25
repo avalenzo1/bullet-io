@@ -110,9 +110,7 @@ class Game {
   
   mouseMove(e) {
     if (this.room) {
-      console.log(this.playerId);
-      console.log(this.room.player[this.playerId]);
-      console.log(Math.atan2((e.clientY - this.room.player[this.playerId].y), (e.clientX - this.room.player[this.playerId].x)))
+      this.controls.θ = Math.atan2((e.clientY - this.room.player[this.playerId].y), (e.clientX - this.room.player[this.playerId].x)) || 0;
     }
   }
   
@@ -151,6 +149,15 @@ class Game {
       ctx.save();
       for (let playerId of Object.keys(this.room.player)) {
         let player = this.room.player[playerId];
+        
+        ctx.save();
+        ctx.rotate(player.θ)
+        ctx.beginPath();
+        ctx.moveTo(0,0);
+        ctx.lineTo(100,0);
+        ctx.stroke();
+        
+        ctx.restore();
         
         ctx.fillStyle = "#333";
         ctx.fillText(`${player.hp} / ${player.hpCapacity} hp`, player.x, player.y)

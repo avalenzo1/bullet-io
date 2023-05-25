@@ -31,9 +31,9 @@ class Ticker {
 
 class Player {
   #ticker;
-  #θ;
   #µ;
   #a;
+  #θ;
   #g;
   #collision;
   #velocity;
@@ -94,10 +94,6 @@ class Player {
         
         this.#velocity.y += this.#acceleration.y;
         
-        if (this.#velocity.y > this.#g * 2) {
-          this.#velocity.y = this.#g * 2;
-        }
-        
         if (this.controls.left) {
           this.#velocity.x -= this.#acceleration.x;
         }
@@ -113,6 +109,11 @@ class Player {
         this.#velocity.y *= this.#µ;
         
         // Sets boundaries of arena
+        if (this.y < 0) {
+          this.#velocity.y = 0;
+          this.y = 0;
+        }
+        
         if (this.y > 500 - this.#collision.h) {
           this.#velocity.y = 0;
           this.y = 500 - this.#collision.h;
