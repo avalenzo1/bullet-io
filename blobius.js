@@ -42,8 +42,6 @@ class Player {
   constructor({ socket, params }) {
       this.id = socket.id;
       this.username = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], length: 3 });
-      this.hp = 100;
-      this.hpCapacity = 100;
       this.x = 0;
       this.y = 0;
       this.w = 50;
@@ -72,6 +70,10 @@ class Player {
         w: 50,
         h: 100
       };
+    
+      this.lives = 3;
+      this.hp = 100;
+      this.hpCapacity = 100;
     
       this.controls = {
         up: false,
@@ -113,18 +115,34 @@ class Player {
         if (this.y < 0) {
           this.#velocity.y = 0;
           this.y = 0;
+          this.hp--;
         }
         
         if (this.y > 500 - this.#collision.h) {
           this.#velocity.y = 0;
           this.y = 500 - this.#collision.h;
         }
+        
+        if (this.hp < 0) {
+          this.die();
+        }
       };
     
       this.#ticker.start();
   }
   
-  
+  die() {
+    this.lives--;
+    
+    if (this.lives < 0) {
+      this.#ticker.stop();
+    }
+    
+    this.hp = this.hpCapacity;
+    
+    this.x = 0;
+    this.y = 0;
+  }
 }
 
 class Room {
