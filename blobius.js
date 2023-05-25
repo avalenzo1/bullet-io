@@ -84,11 +84,14 @@ class Bullet extends GameObject {
     this.showExplosion = false;
     
     this.θ = θ;
+    this.range = 5;
     this.#ticker = new Ticker(50);
     
     this.#ticker.step = () => {
-      this.velocity.x += Math.cos(this.θ);
-      this.velocity.y += Math.sin(this.θ);
+      this.velocity.x += Math.cos(this.θ) * this.range;
+      this.velocity.y += Math.sin(this.θ) * this.range;
+      
+      this.velocity.y += this.acceleration.y / 5;
       
       this.x += this.velocity.x;
       this.y += this.velocity.y;
@@ -152,7 +155,7 @@ class Player extends GameObject {
       this.velocity.y += this.acceleration.y;
       
       if (this.controls.shoot) {
-        let bullet = new Bullet(this.x, this.y, this.controls.θ);
+        let bullet = new Bullet(this.x + this.w / 2, this.y + this.h / 2, this.controls.θ);
         
         this.bullets.push(bullet);
         

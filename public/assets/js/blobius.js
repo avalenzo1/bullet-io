@@ -89,6 +89,11 @@ class Game {
       down: false,
       shoot: false
     }
+    
+    this.assets = {};
+    
+    this.assets.bullet = new Image();
+    this.assets.bullet.src = "https://static.wikia.nocookie.net/villains/images/7/7a/Bullet.png/revision/latest/scale-to-width-down/260?cb=20200617045537"
   }
 
   setControls(key, state) { 
@@ -202,7 +207,7 @@ class Game {
         if (player.bullets.length > 0) {
           for (let bullet of player.bullets) {
             let bulletCoordinates = camera.getCoordinates(bullet.x, bullet.y)
-            ctx.fillRect(bulletCoordinates.x, bulletCoordinates.y, bullet.w, bullet.h);
+            ctx.drawImage(this.assets.bullet, bulletCoordinates.x, bulletCoordinates.y, bullet.w, bullet.h);
           }
         }
       }
