@@ -126,17 +126,17 @@ class Game {
     ctx.fillStyle = "#fdfdfd";
     ctx.fillRect(0,0,canvas.width, canvas.height);
     
-    ctx.font = "16px Monospace"
+    ctx.fillStyle = "#dfdfdf";
+    ctx.fillRect(0,500,canvas.width, canvas.height);
     
-    
-    ctx.fillStyle = "#f00";
+    ctx.font = "16px Monospace";
+
     if (this.room) {
       for (let playerId of Object.keys(this.room.player)) {
         let player = this.room.player[playerId];
         
-        ctx.beginPath();
-        ctx.arc(player.x, player.y, 100, 0, 2 * Math.PI);
-        ctx.fill();
+        ctx.fillStyle = player.color;
+        ctx.fillRect(player.x, player.y, 50, 100);
       }
     }
     

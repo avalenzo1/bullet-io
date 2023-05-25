@@ -38,8 +38,11 @@ class Player {
       this.hp = 100;
       this.x = 0;
       this.y = 0;
+      this.w = 50;
+      this.h = 100;
       this.xVel = 0;
       this.yVel = 0;
+      this.colW = 
       this.controls = {
         up: false,
         left: false,
@@ -48,9 +51,11 @@ class Player {
       };
       this.θ = 0;
       this.µ = 0.95;
-      this.a = 5;
-      
+      this.a = 1;
+      this.g = 9.8;
       this.username = params.username || "Anonymous";
+      this.color = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
+
     
       this.buffer = [];
         
@@ -58,12 +63,14 @@ class Player {
     
       this.#ticker.step = () => {
         if (this.controls.up) {
-          this.yVel -= this.a;
+          this.yVel -= this.g * 2;
         }
         
-        if (this.controls.down) {
-          this.yVel += this.a;
-        }
+//         if (this.controls.down) {
+//           this.yVel += this.a;
+//         }
+        
+        this.yVel += this.g;
         
         if (this.controls.left) {
           this.xVel -= this.a;
@@ -78,6 +85,11 @@ class Player {
         
         this.xVel *= this.µ;
         this.yVel *= this.µ;
+        
+        if (this.y > 500) {
+          this.yVel = 0;
+          this.y = 500;
+        }
       };
     
       this.#ticker.start();
