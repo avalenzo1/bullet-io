@@ -136,7 +136,7 @@ class Game {
         let player = this.room.player[playerId];
         
         ctx.fillStyle = player.color;
-        ctx.fillRect(player.x, player.y, 50, 100);
+        ctx.fillRect(player.x, player.y, player.w, player.h);
       }
     }
     

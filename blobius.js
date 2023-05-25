@@ -31,6 +31,13 @@ class Ticker {
 
 class Player {
   #ticker;
+  #θ;
+  #µ;
+  #a;
+  #g;
+  #collision;
+  #velocity;
+  #acceleration;
   
   constructor({ socket, params }) {
       this.id = socket.id;
@@ -40,22 +47,40 @@ class Player {
       this.y = 0;
       this.w = 50;
       this.h = 100;
-      this.xVel = 0;
-      this.yVel = 0;
-      this.colW = 
+    
+      // Theta
+      this.#θ = 0;
+    
+      // Mu
+      this.#µ = 0.95;
+    
+      // Gravity
+      this.#g = 9.8;
+    
+      this.#velocity = {
+        x: 0,
+        y: 0
+      };
+    
+      this.#acceleration = {
+        x: 1,
+        y: this.#g
+      };
+    
+      this.#collision = {
+        w: 50,
+        h: 100
+      };
+    
       this.controls = {
         up: false,
         left: false,
         right: false,
         down: false
       };
-      this.θ = 0;
-      this.µ = 0.95;
-      this.a = 1;
-      this.g = 9.8;
+    
       this.username = params.username || "Anonymous";
       this.color = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
-
     
       this.buffer = [];
         
@@ -63,31 +88,28 @@ class Player {
     
       this.#ticker.step = () => {
         if (this.controls.up) {
-          this.yVel -= this.g * 2;
+          this.#velocity.y -= this.#g * 2;
         }
         
-//         if (this.controls.down) {
-//           this.yVel += this.a;
-//         }
-        
-        this.yVel += this.g;
+        this.#velocity.y += this.#acceleration.y;
         
         if (this.controls.left) {
-          this.xVel -= this.a;
+          this.#velocity.x -= this.#acceleration.x;
         }
         
         if (this.controls.right) {
-          this.xVel += this.a;
+          this.#velocity.x += this.#acceleration.x;
         }
         
-        this.x += this.xVel;
-        this.y += this.yVel;
+        this.x += this.#velocity.x;
+        this.y += this.#velocity.y;
         
-        this.xVel *= this.µ;
-        this.yVel *= this.µ;
+        this.#velocity.x *= this.#µ;
+        this.#velocity.y *= this.#µ;
         
-        if (this.y > 500) {
-          this.yVel = 0;
+        // Sets boundaries of arena
+        if (this.y > 500 - this.#collis) {
+          this.#velocity.x = 0;
           this.y = 500;
         }
       };
