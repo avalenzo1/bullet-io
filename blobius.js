@@ -34,7 +34,8 @@ class Ticker {
 }
 
 function tickerArrayStep(objects) {
-  if (typeof objects === 'array' && objects.length > 0) {
+  if (objects.length > 0) {
+    
     for (let object of objects) {
       object.step();
     }
@@ -102,6 +103,10 @@ class Bullet extends GameObject {
 
     this.velocity.x *= this.µ;
     this.velocity.y *= this.µ;
+  }
+  
+  selfDestruct() {
+    this.showExplosion = true;
   }
 }
 
@@ -226,6 +231,8 @@ class Room {
     this.#ticker.step = () => {
       tickerArrayStep(Object.values(this.player));
       this.checkForCollision();
+      
+      console.log("gooof ahh")
       
       this.#io.to(this.id).emit("Room/Tick", this);
     };
