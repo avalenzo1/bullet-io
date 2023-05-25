@@ -41,7 +41,7 @@ function handleCtx(ctx) {
 }
 
 class Game {
-  constructor(socket) {
+  constructor() {
     this.canvas = document.getElementById("canvas");
     this.ctx = this.canvas.getContext("2d");
     
@@ -73,7 +73,7 @@ class Game {
     // Handles Mousemove Events
     window.addEventListener("mousemove", this.mouseMove.bind(this));
     
-    this.playerId = socket.id;
+    this.playerId;
     this.controls = {
       up: false,
       left: false,
@@ -120,13 +120,10 @@ class Game {
   }
   
   mouseMove(e) {
-    if (this.room) {
-      let player = this.room.player[this.playerId];
-      this.controls.θ = Math.atan2(
-        (e.clientY - player.y - (player.h / 2)),
-        (e.clientX - player.x - (player.w / 2))
+    this.controls.θ = Math.atan2(
+        (e.clientY - this.canvas.height / 2),
+        (e.clientX - this.canvas.width / 2)
       ) || 0;
-    }
   }
   
   resizeCanvas() {
@@ -155,35 +152,37 @@ class Game {
     ctx.fillStyle = "#fdfdfd";
     ctx.fillRect(0,0,canvas.width, canvas.height);
     
-    ctx.fillStyle = "#dfdfdf";
-    ctx.fillRect(0,500,canvas.width, canvas.height);
-    
     ctx.font = "16px Monospace";
 
     if (this.room) {
+      this.camera.focusOn(this.room.player[this.playerId]);
+      
+          ctx.fillStyle = "#dfdfdf";
+      ctx.fillRect(0,500,canvas.width, canvas.height);
+      
       ctx.save();
       for (let playerId of Object.keys(this.room.player)) {
         let player = this.room.player[playerId];
+        let coordinates = this.camera.getCoordinates(player.x, player.y);
         
-        if (player === this.room.player[this.playerId]) {
-          
-        } else {
-          let coordinates = this.camera.getCoordinates(player.x, player.y);
-        }
-        ctx.fillStyle = "#333";
-        ctx.fillText(`${player.hp} / ${player.hpCapacity} hp`, player.x, player.y)
+        // if (player === this.room.player[this.playerId]) {
+        //   coordinates.x = canvas.width / 2;
+        //   coordinates.y = canvas.height / 2;
+        // }
+        
+        ctx.fillText(`${player.hp} / ${player.hpCapacity} hp`, coordinates.x, coordinates.y)
         ctx.fillStyle = player.color;
-        ctx.fillText(`${player.username}`, player.x, player.y - 12);
-        ctx.fillRect(player.x, player.y, player.w, player.h);
-        
+        ctx.fillText(`${player.username}`, coordinates.x, coordinates.y - 12);
+        ctx.fillRect(coordinates.x, coordinates.y, player.w, player.h);
+
         ctx.save();
-        ctx.translate(player.x + player.w / 2, player.y + player.h / 2);
+        ctx.translate(coordinates.x + player.w / 2, coordinates.y + player.h / 2);
         ctx.rotate(player.controls.θ)
         ctx.beginPath();
         ctx.moveTo(0,0);
         ctx.lineTo(100,0);
         ctx.stroke();
-        
+
         ctx.restore();
       }
       ctx.restore();
@@ -215,7 +214,7 @@ class Client {
 
     this.socket.on("connect", () => {
       console.log("Socket was connected");
-      this.game.
+      this.game.playerId = this.socket.id;
     });
 
     this.socket.on("Room/Join", (room) => {
