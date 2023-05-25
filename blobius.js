@@ -250,26 +250,26 @@ class Room {
   }
   
   checkForCollision() {
-    let playerList = Object.entries(this.player);
+    let elements = Object.entries(this.player);
     
-    if (playerList.length > 1) {
-      for (let i = 1; i < playerList.length; i++) {
-        let obj1 = playerList[i - 1];
-        let obj2 = playerList[i];
-        
-        if (
-          obj1[1].x < obj2[1].x + obj2[1].w &&
-          obj1[1].x + obj1[1].w > obj2[1].x &&
-          obj1[1].y < obj2[1].y + obj2[1].h &&
-          obj1[1].h + obj1[1].y > obj2[1].y
-          )
-        {
-          obj1[1].colliding = true;
-          obj2[1].colliding = true;
-        } else {
-          obj1[1].colliding = false;
-          obj2[1].colliding = false;
-        }
+    
+    for (let i = 1; i < elements.length; i++) {
+
+      let obj1 = elements[i - 1];
+      let obj2 = elements[i];
+
+      if (
+        obj1[1].x < obj2[1].x + obj2[1].w &&
+        obj1[1].x + obj1[1].w > obj2[1].x &&
+        obj1[1].y < obj2[1].y + obj2[1].h &&
+        obj1[1].h + obj1[1].y > obj2[1].y
+        )
+      {
+        obj1[1].colliding = true;
+        obj2[1].colliding = true;
+      } else {
+        obj1[1].colliding = false;
+        obj2[1].colliding = false;
       }
     }
   }
