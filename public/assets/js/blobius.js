@@ -128,6 +128,15 @@ class Game {
     
     ctx.font = "16px Monospace"
     
+    if (this.room) {
+      for (let player of Object.keys(this.room)) {
+        ctx.beginPath();
+        ctx.arc(player.x, player.y, 5, 0, 2 * Math.PI);
+        ctx.fill();
+      }
+    }
+    
+    
     if (this.showDebug) {
       ctx.fillStyle = "#000";
       ctx.fillMultiLineText(`Camera: ${JSON.stringify(this.camera, null, "  ")}\n\nPlayer: ${JSON.stringify(this.controls, null, " ")}\n\nRoom: ${JSON.stringify(this.room, null, " ")}`, 0, 16);

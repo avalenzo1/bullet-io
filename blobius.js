@@ -40,12 +40,43 @@ class Player {
       this.y = 0;
       this.xVel = 0;
       this.yVel = 0;
-      this.controls;
-      this.theta = 0;
-    
+      this.controls = {
+        up: false,
+        left: false,
+        right: false,
+        bottom: false
+      };
+      this.θ = 0;
+      this.µ = 0.5;
+      this.username = params.username || "Anonymous";
+        
       this.#ticker = new Ticker(50);
     
-      this.username = params.username || "Anonymous";
+      this.#ticker.step = () => {
+        if (this.controls.up) {
+          this.yVel--;
+        }
+        
+        if (this.controls.down) {
+          this.yVel++;
+        }
+        
+        if (this.controls.left) {
+          this.xVel--;
+        }
+        
+        if (this.controls.right) {
+          this.xVel++;
+        }
+        
+        this.x += this.xVel;
+        this.y += this.yVel;
+        
+        this.xVel *= this.µ;
+        this.yVel *= this.µ;
+      };
+    
+      this.#ticker.start();
   }
   
   
