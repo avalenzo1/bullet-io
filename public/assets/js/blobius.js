@@ -170,13 +170,13 @@ class Game {
 
     ctx.clearRect(0,0,canvas.width, canvas.height);
     
-    ctx.fillStyle = "#fdfdfd";
+    ctx.fillStyle = "dodgerblue";
     ctx.fillRect(0,0,canvas.width, canvas.height);
     
     let floor = this.camera.getCoordinates(0, 500);
     
-    ctx.fillStyle = "#dfdfdf";
-    ctx.fillRect(floor.x,floor.y,canvas.width, canvas.height);
+    ctx.fillStyle = "green";
+    ctx.fillRect(0,floor.y,canvas.width, canvas.height);
     
     ctx.font = "16px Monospace";
 
@@ -216,8 +216,8 @@ class Game {
     
     
     if (this.showDebug) {
-      ctx.fillStyle = "#000";
-      ctx.fillMultiLineText(`Camera: ${JSON.stringify(this.camera, null, "  ")}\n\nPlayer: ${JSON.stringify(this.controls, null, " ")}\n\nRoom: ${JSON.stringify(this.room, null, " ")}`, 0, 16);
+      ctx.fillStyle = "#0002";
+      ctx.fillMultiLineText(`Camera: ${JSON.stringify(this.camera, null, "  ")}\n\nRoom: ${JSON.stringify(this.room, null, " ")}`, 0, 16);
     }
     
     this.requestId = window.requestAnimationFrame(this.render.bind(this));

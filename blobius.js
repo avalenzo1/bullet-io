@@ -252,8 +252,17 @@ class Room {
   checkForCollision() {
     let playerList = Object.entries(this.player);
     
-    for (let i = 0; i < playerList.length; i++) {
-      
+    if (playerList.length > 1) {
+      for (let i = 1; i < playerList.length; i++) {
+        let property = playerList[0];
+        let rect1 = playerList[1];
+        let rect1 = playerList[1];
+        
+        rect1.x < rect2.x + rect2.w &&
+        rect1.x + rect1.w > rect2.x &&
+        rect1.y < rect2.y + rect2.h &&
+        rect1.h + rect1.y > rect2.y
+      }
     }
   }
 
