@@ -25,7 +25,7 @@ function handleCtx(ctx) {
 }
 
 class Game {
-  constructor(socket) {
+  constructor() {
     this.canvas = document.getElementById("canvas");
     this.ctx = this.canvas.getContext("2d");
     
@@ -57,15 +57,18 @@ class Game {
     // Handles Mousemove Events
     window.addEventListener("mousemove", this.mouseMove.bind(this));
     
-    console.log(socket)
-    
-    this.playerId = socket.id;
+    this.playerId;
     this.controls = {
       up: false,
       left: false,
       right: false,
       down: false
     }
+  }
+  
+  attachSocket(socket) {
+    this.socket = socket;
+    this.playerId = this.socket.id;
   }
   
   setControls(key, state) { 
@@ -108,7 +111,7 @@ class Game {
   mouseMove(e) {
     if (this.room) {
       console.log(this.playerId);
-      console.log(this.room.player);
+      console.log(this.room.player[this.playerId]);
       console.log(Math.atan2((e.clientY - this.room.player[this.playerId].y), (e.clientX - this.room.player[this.playerId].x)))
     }
   }
@@ -172,7 +175,7 @@ class Client {
   constructor(socket) {
     this.socket = socket;
     this.room = null;
-    this.game = new Game(socket);
+    this.game = new Game();
   }
 
   listen() {
@@ -184,6 +187,7 @@ class Client {
 
     this.socket.on("connect", () => {
       console.log("Socket was connected");
+      this.game.attachSocket(this.socket);
     });
 
     this.socket.on("Room/Join", (room) => {

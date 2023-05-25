@@ -94,6 +94,10 @@ class Player {
         
         this.#velocity.y += this.#acceleration.y;
         
+        if (this.#velocity.y > this.#g * 2) {
+          this.#velocity.y = this.#g * 2;
+        }
+        
         if (this.controls.left) {
           this.#velocity.x -= this.#acceleration.x;
         }
