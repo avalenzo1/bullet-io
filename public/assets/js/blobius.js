@@ -1,5 +1,6 @@
 class Camera {
-  constructor() {
+  constructor(canvas) {
+    this.canvas = canvas;
     this.x = 0;
     this.y = 0;
     this.θ = 0;
@@ -10,22 +11,25 @@ class Camera {
     this.focus = object;
   }
   
+  setCenterCoordinates(x, y) {
+    this.x = x || this.canvas.width / 2;
+    this.y = y || this.canvas.height / 2;
+
+    return this;
+  }
+  
   getCoordinates(x, y) {
     let focusX = 0;
     let focusY = 0;
-    let focusCx = 0;
-    let focusCy = 0;
 
     if (this.focus) {
       focusX = this.focus.x;
       focusY = this.focus.y;
-      focusCx = this.focus.w / 2;
-      focusCy = this.focus.h / 2;
     }
 
     return {
-      x: this.x + focusCx + x - focusX,
-      y: this.y + focusCy + y - focusY,
+      x: this.x + x - focusX,
+      y: this.y + y - focusY,
     };
   }
 }
@@ -52,7 +56,7 @@ class Game {
     this.ctx = handleCtx(this.ctx);
 
     // Handles objects
-    this.camera = new Camera();
+    this.camera = new Camera(this.canvas);
     
     this.room = null;
     
@@ -151,16 +155,19 @@ class Game {
   render() {
     let ctx = this.ctx;
     let canvas = this.canvas;
+    let camera = this.camera;
+    
+    camera.setCenterCoordinates();
 
     ctx.clearRect(0,0,canvas.width, canvas.height);
     
     ctx.fillStyle = "#fdfdfd";
     ctx.fillRect(0,0,canvas.width, canvas.height);
     
-    let coordinates = this.camera.getCoordinates(0, 500);
+    let floor = this.camera.getCoordinates(0, 500);
     
     ctx.fillStyle = "#dfdfdf";
-    ctx.fillRect(coordinates.x,coordinates.y,canvas.width, canvas.height);
+    ctx.fillRect(floor.x,floor.y,canvas.width, canvas.height);
     
     ctx.font = "16px Monospace";
 
@@ -169,43 +176,24 @@ class Game {
       
       for (let playerId of Object.keys(this.room.player)) {
         let player = this.room.player[playerId];
+        let coordinates = (player === this.room.player[this.playerId]) ? camera : camera.getCoordinates(player.x, player.y)
         
-        if (player === this.room.player[this.playerId]) {
-          let coordinates.x = canvas.width / 2 - player.w / 2;
-          coordinates.y = canvas.height / 2 - player.h / 2;
-          
-          ctx.fillText(`${player.hp} / ${player.hpCapacity} hp`, coordinates.x, coordinates.y)
-          ctx.fillStyle = player.color;
-          ctx.fillText(`${player.username}`, coordinates.x, coordinates.y - 12);
-          ctx.fillRect(coordinates.x, coordinates.y, player.w, player.h);
+        ctx.fillStyle = "#333";
+        ctx.fillMultiLineText(`${player.hp} / ${player.hpCapacity} hp \n${player.lives} live(s)`, coordinates.x, coordinates.y - 24)
+        ctx.fillStyle = player.color;
+        ctx.fillText(`${player.username}`, coordinates.x, coordinates.y - 36);
+        ctx.fillRect(coordinates.x, coordinates.y, player.w, player.h);
 
-          ctx.save();
-          ctx.translate(coordinates.x + player.w / 2, coordinates.y + player.h / 2);
-          ctx.rotate(player.controls.θ)
-          ctx.beginPath();
-          ctx.moveTo(0,0);
-          ctx.lineTo(100,0);
-          ctx.stroke();
+        ctx.save();
+        
+        ctx.translate(coordinates.x + player.w / 2, coordinates.y + player.h / 2);
+        ctx.rotate(player.controls.θ)
+        ctx.beginPath();
+        ctx.moveTo(0,0);
+        ctx.lineTo(100,0);
+        ctx.stroke();
 
-          ctx.restore();
-        } else {
-          let coordinates = this.camera.getCoordinates(player.x, player.y);
-          
-          ctx.fillText(`${player.hp} / ${player.hpCapacity} hp`, coordinates.x, coordinates.y)
-          ctx.fillStyle = player.color;
-          ctx.fillText(`${player.username}`, coordinates.x, coordinates.y - 12);
-          ctx.fillRect(coordinates.x, coordinates.y, player.w, player.h);
-
-          ctx.save();
-          ctx.translate(coordinates.x + player.w / 2, coordinates.y + player.h / 2);
-          ctx.rotate(player.controls.θ)
-          ctx.beginPath();
-          ctx.moveTo(0,0);
-          ctx.lineTo(100,0);
-          ctx.stroke();
-
-          ctx.restore();
-        }
+        ctx.restore();
         
         
       }
