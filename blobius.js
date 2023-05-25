@@ -249,23 +249,26 @@ class Room {
     let elements = Object.entries(this.player);
     
     
-    for (let i = 1; i < elements.length; i++) {
+    for (let i = 0; i < elements.length; i++) {
+      let obj1 = elements[i - 1]; // element i
+      for (let i = 0; i < elements.length; i++) {
 
-      let obj1 = elements[i - 1];
-      let obj2 = elements[i];
+        
+        let obj2 = elements[i];// element j
 
-      if (
-        obj1[1].x < obj2[1].x + obj2[1].w &&
-        obj1[1].x + obj1[1].w > obj2[1].x &&
-        obj1[1].y < obj2[1].y + obj2[1].h &&
-        obj1[1].h + obj1[1].y > obj2[1].y
-        )
-      {
-        obj1[1].colliding = true;
-        obj2[1].colliding = true;
-      } else {
-        obj1[1].colliding = false;
-        obj2[1].colliding = false;
+        if (
+          obj1[1].x < obj2[1].x + obj2[1].w &&
+          obj1[1].x + obj1[1].w > obj2[1].x &&
+          obj1[1].y < obj2[1].y + obj2[1].h &&
+          obj1[1].h + obj1[1].y > obj2[1].y
+          )
+        {
+          obj1[1].colliding = true;
+          obj2[1].colliding = true;
+        } else {
+          obj1[1].colliding = false;
+          obj2[1].colliding = false;
+        }
       }
     }
   }
