@@ -34,15 +34,6 @@ class Ticker {
 }
 
 class GameObject {
-  #µ;
-  #a;
-  #θ;
-  #g;
-  #collision;
-  #velocity;
-  #acceleration;
-  #config;
-
   constructor(x, y, w, h, mass) {
     this.x = x || 0;
     this.y = y || 0;
@@ -50,46 +41,38 @@ class GameObject {
     this.h = h || 10;
     this.mass = mass || 1;
 
-    this.#config = {
-      useGravity: false,
+    this.config = {
+      useGravity: true,
     };
 
     // Theta
-    this.#θ = 0;
+    this.θ = 0;
 
     // Mu
-    this.#µ = 0.95;
+    this.µ = 0.95;
 
     // Gravity
-    this.#g = 9.8;
+    this.g = 9.8;
 
-    this.#velocity = {
+    this.velocity = {
       x: 0,
       y: 0,
     };
 
-    this.#acceleration = {
+    this.acceleration = {
       x: 1,
-      y: this.#config.useGravity ? this.#g : 0,
+      y: this.config.useGravity ? this.g : 0,
     };
 
-    this.#collision = {
-      w: 10,
-      h: 10,
+    this.collision = {
+      w: this.w,
+      h: this.h,
     };
   }
 }
 
 class Player extends GameObject {
   #ticker;
-  #µ;
-  #a;
-  #θ;
-  #g;
-  #collision;
-  #velocity;
-  #acceleration;
-  #config;
 
   constructor({ socket, params }) {
     super(0, 0, 50, 100);
@@ -116,6 +99,8 @@ class Player extends GameObject {
     this.color = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${
       Math.random() * 255
     })`;
+    
+    console.log(this.velocity)
 
     this.buffer = [];
 
@@ -123,35 +108,35 @@ class Player extends GameObject {
 
     this.#ticker.step = () => {
       if (this.controls.up) {
-        this.#velocity.y -= this.#g * 2;
+        this.velocity.y -= this.g * 2;
       }
 
-      this.#velocity.y += this.#acceleration.y;
+      this.velocity.y += this.acceleration.y;
 
       if (this.controls.left) {
-        this.#velocity.x -= this.#acceleration.x;
+        this.velocity.x -= this.acceleration.x;
       }
 
       if (this.controls.right) {
-        this.#velocity.x += this.#acceleration.x;
+        this.velocity.x += this.acceleration.x;
       }
 
-      this.x += this.#velocity.x;
-      this.y += this.#velocity.y;
+      this.x += this.velocity.x;
+      this.y += this.velocity.y;
 
-      this.#velocity.x *= this.#µ;
-      this.#velocity.y *= this.#µ;
+      this.velocity.x *= this.µ;
+      this.velocity.y *= this.µ;
 
       // Sets boundaries of arena
       if (this.y < 0) {
-        this.#velocity.y = 0;
+        this.velocity.y = 0;
         this.y = 0;
         this.hp--;
       }
 
-      if (this.y > 500 - this.#collision.h) {
-        this.#velocity.y = 0;
-        this.y = 500 - this.#collision.h;
+      if (this.y > 500 - this.collision.h) {
+        this.velocity.y = 0;
+        this.y = 500 - this.collision.h;
       }
 
       if (this.hp < 0) {
@@ -161,6 +146,8 @@ class Player extends GameObject {
 
     this.#ticker.start();
   }
+  
+  
 
   die() {
     this.lives--;
