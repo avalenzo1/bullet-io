@@ -124,6 +124,7 @@ class Player extends GameObject {
     this.lives = 3;
     this.hp = 100;
     this.hpCapacity = 100;
+    this.colliding = true;
 
     this.controls = {
       up: false,
@@ -184,7 +185,7 @@ class Player extends GameObject {
       this.velocity.y *= this.µ;
 
       // Sets boundaries of arena
-      if (this.y < 0) {
+      if (this.y < -100) {
         this.velocity.y = 0;
         this.y = 0;
         this.hp--;
@@ -217,12 +218,6 @@ class Player extends GameObject {
   }
 }
 
-class CollisionEngine {
-  constructor(world) {
-    this.world = world;
-  }
-}
-
 class Room {
   #io;
   #ticker;
@@ -241,6 +236,8 @@ class Room {
     this.#ticker = new Ticker(50);
 
     this.#ticker.step = () => {
+      this.checkForCollision();
+      
       this.#io.to(this.id).emit("Room/Tick", this);
     };
 
@@ -250,6 +247,12 @@ class Room {
   get available() {
     // Checks if room is full
     return Object.keys(this.player).length / this.capacity < 1;
+  }
+  
+  checkForCollision() {
+    for (const playerId in this.player) {
+      
+    }
   }
 
   attachSocket(socket, params) {
