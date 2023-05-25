@@ -71,6 +71,12 @@ class GameObject {
   }
 }
 
+class Bullet extends GameObject {
+  constructor() {
+    super(0,0,10,10);
+  }
+}
+
 class Player extends GameObject {
   #ticker;
 
@@ -92,8 +98,11 @@ class Player extends GameObject {
       left: false,
       right: false,
       down: false,
+      shoot: false,
       θ: 0,
     };
+    
+    this.bullets = [];
 
     this.username = params.username || "Anonymous";
     this.color = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${
@@ -112,6 +121,10 @@ class Player extends GameObject {
       }
 
       this.velocity.y += this.acceleration.y;
+      
+      if (this.controls.shoot) {
+        this.bullets.push(new Bullet());
+      }
 
       if (this.controls.left) {
         this.velocity.x -= this.acceleration.x;
@@ -146,8 +159,6 @@ class Player extends GameObject {
 
     this.#ticker.start();
   }
-  
-  
 
   die() {
     this.lives--;

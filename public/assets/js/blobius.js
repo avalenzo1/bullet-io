@@ -86,7 +86,8 @@ class Game {
       up: false,
       left: false,
       right: false,
-      down: false
+      down: false,
+      shoot: false
     }
   }
 
@@ -111,6 +112,9 @@ class Game {
       case 's':
       case 'ArrowDown':
         this.controls.down = state;
+        break;
+      case ' ':
+        this.controls.shoot = state;
         break;
     }
   }
@@ -195,7 +199,9 @@ class Game {
 
         ctx.restore();
         
-        
+        if (player.bullets) {
+          
+        }
       }
       ctx.restore();
     }
