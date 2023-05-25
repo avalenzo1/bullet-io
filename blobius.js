@@ -250,7 +250,9 @@ class Room {
   }
   
   checkForCollision() {
-    for (const playerId in this.player) {
+    let playerList = Object.entries(this.player);
+    
+    for (let i = 0; i < playerList.length; i++) {
       
     }
   }
