@@ -15,12 +15,6 @@ function UID() {
   return Math.random().toString(36).slice(-6).toUpperCase();
 }
 
-function updateAll(array) {
-  if (typeof array === 'array' && array.length > 0) {
-    
-  }
-}
-
 class Ticker {
   constructor(delay) {
     this.delay = delay > 5 ? delay : 50;
@@ -36,6 +30,14 @@ class Ticker {
 
   stop() {
     clearInterval(this.intervalId);
+  }
+}
+
+function tickerArrayStep(objects) {
+  if (typeof objects === 'array' && objects.length > 0) {
+    for (let object of objects) {
+      object.step();
+    }
   }
 }
 
@@ -104,8 +106,6 @@ class Bullet extends GameObject {
 }
 
 class Player extends GameObject {
-  #ticker;
-
   constructor({ socket, params }) {
     super(0, 0, 50, 100);
 
@@ -135,21 +135,16 @@ class Player extends GameObject {
     this.color = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${
       Math.random() * 255
     })`;
-    
-    console.log(this.velocity)
-
-    this.buffer = [];
-
-    this.#ticker = new Ticker(50);
-
-    this.#ticker.step = () => {
+  }
+  
+  step() {
       if (this.controls.up) {
         this.velocity.y -= this.g * 2;
       }
 
       this.velocity.y += this.acceleration.y;
       
-      arrayStep(this.bullets);
+      tickerArrayStep(this.bullets);
       
       if (this.controls.shoot) {
         let bullet = new Bullet(this.x + this.w / 2, this.y + this.h / 2, this.controls.θ);
@@ -195,16 +190,13 @@ class Player extends GameObject {
       if (this.hp < 0) {
         this.die();
       }
-    };
-
-    this.#ticker.start();
   }
 
   die() {
     this.lives--;
 
     if (this.lives < 0) {
-      this.#ticker.stop();
+      this.color = "red";
     }
 
     this.hp = this.hpCapacity;
@@ -232,6 +224,7 @@ class Room {
     this.#ticker = new Ticker(50);
 
     this.#ticker.step = () => {
+      tickerArrayStep(Object.values(this.player));
       this.checkForCollision();
       
       this.#io.to(this.id).emit("Room/Tick", this);
