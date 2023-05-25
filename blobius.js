@@ -77,7 +77,8 @@ class Player {
         up: false,
         left: false,
         right: false,
-        down: false
+        down: false,
+        θ: 0
       };
     
       this.username = params.username || "Anonymous";
