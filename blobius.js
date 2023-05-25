@@ -44,6 +44,8 @@ class GameObject {
     this.config = {
       useGravity: true,
     };
+    
+    this.opacity = 1;
 
     // Theta
     this.θ = 0;
@@ -72,9 +74,31 @@ class GameObject {
 }
 
 class Bullet extends GameObject {
-  constructor() {
-    super(0,0,10,10);
+  #ticker;
+  
+  constructor(x, y, θ) {
+    super(x,y,10,10);
+    
+    this.config.useGravity = false;
+    
+    
+    this.#ticker = new Ticker(50);
+    
+    this.#ticker.step = () => {
+      this.velocity.x += Math.cos(this.θ);
+      this.velocity.y += Math.sin(this.θ);
+      
+      this.x += this.velocity.x;
+      this.y += this.velocity.y;
+
+      this.velocity.x *= this.µ;
+      this.velocity.y *= this.µ;
+    }
+    
+    this.#ticker.start();
   }
+  
+  
 }
 
 class Player extends GameObject {
@@ -123,7 +147,13 @@ class Player extends GameObject {
       this.velocity.y += this.acceleration.y;
       
       if (this.controls.shoot) {
-        this.bullets.push(new Bullet());
+        let bullet = new Bullet(this.x, this.y, this.controls.θ);
+        
+        this.bullets.push(bullet);
+        
+        setTimeout(() => {
+          bullet.
+        })
       }
 
       if (this.controls.left) {

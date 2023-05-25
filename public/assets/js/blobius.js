@@ -199,8 +199,11 @@ class Game {
 
         ctx.restore();
         
-        if (player.bullets) {
-          
+        if (player.bullets.length > 0) {
+          for (let bullet of player.bullets) {
+            let bulletCoordinates = camera.getCoordinates(bullet.x, bullet.y)
+            ctx.fillRect(bulletCoordinates.x, bulletCoordinates.y, bullet.w, bullet.h);
+          }
         }
       }
       ctx.restore();
