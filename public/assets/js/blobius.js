@@ -13,15 +13,19 @@ class Camera {
   getCoordinates(x, y) {
     let focusX = 0;
     let focusY = 0;
+    let focusCx = 0;
+    let focusCy = 0;
 
     if (this.focus) {
       focusX = this.focus.x;
       focusY = this.focus.y;
+      focusCx = this.focus.w / 2;
+      focusCy = this.focus.h / 2;
     }
 
     return {
-      x: this.x + x - this.focusX,
-      y: this.y + y - this.focusY,
+      x: this.x + focusCx + x - focusX,
+      y: this.y + focusCy + y - focusY,
     };
   }
 }
@@ -137,6 +141,7 @@ class Game {
   
   tick(room) {
     this.room = room;
+    this.camera.focusOn(this.room.player[this.playerId]);
   }
   
   endConnection() {
@@ -152,38 +157,57 @@ class Game {
     ctx.fillStyle = "#fdfdfd";
     ctx.fillRect(0,0,canvas.width, canvas.height);
     
+    let coordinates = this.camera.getCoordinates(0, 500);
+    
+    ctx.fillStyle = "#dfdfdf";
+    ctx.fillRect(coordinates.x,coordinates.y,canvas.width, canvas.height);
+    
     ctx.font = "16px Monospace";
 
     if (this.room) {
-      this.camera.focusOn(this.room.player[this.playerId]);
-      
-          ctx.fillStyle = "#dfdfdf";
-      ctx.fillRect(0,500,canvas.width, canvas.height);
-      
       ctx.save();
+      
       for (let playerId of Object.keys(this.room.player)) {
         let player = this.room.player[playerId];
-        let coordinates = this.camera.getCoordinates(player.x, player.y);
         
-        // if (player === this.room.player[this.playerId]) {
-        //   coordinates.x = canvas.width / 2;
-        //   coordinates.y = canvas.height / 2;
-        // }
+        if (player === this.room.player[this.playerId]) {
+          let coordinates.x = canvas.width / 2 - player.w / 2;
+          coordinates.y = canvas.height / 2 - player.h / 2;
+          
+          ctx.fillText(`${player.hp} / ${player.hpCapacity} hp`, coordinates.x, coordinates.y)
+          ctx.fillStyle = player.color;
+          ctx.fillText(`${player.username}`, coordinates.x, coordinates.y - 12);
+          ctx.fillRect(coordinates.x, coordinates.y, player.w, player.h);
+
+          ctx.save();
+          ctx.translate(coordinates.x + player.w / 2, coordinates.y + player.h / 2);
+          ctx.rotate(player.controls.θ)
+          ctx.beginPath();
+          ctx.moveTo(0,0);
+          ctx.lineTo(100,0);
+          ctx.stroke();
+
+          ctx.restore();
+        } else {
+          let coordinates = this.camera.getCoordinates(player.x, player.y);
+          
+          ctx.fillText(`${player.hp} / ${player.hpCapacity} hp`, coordinates.x, coordinates.y)
+          ctx.fillStyle = player.color;
+          ctx.fillText(`${player.username}`, coordinates.x, coordinates.y - 12);
+          ctx.fillRect(coordinates.x, coordinates.y, player.w, player.h);
+
+          ctx.save();
+          ctx.translate(coordinates.x + player.w / 2, coordinates.y + player.h / 2);
+          ctx.rotate(player.controls.θ)
+          ctx.beginPath();
+          ctx.moveTo(0,0);
+          ctx.lineTo(100,0);
+          ctx.stroke();
+
+          ctx.restore();
+        }
         
-        ctx.fillText(`${player.hp} / ${player.hpCapacity} hp`, coordinates.x, coordinates.y)
-        ctx.fillStyle = player.color;
-        ctx.fillText(`${player.username}`, coordinates.x, coordinates.y - 12);
-        ctx.fillRect(coordinates.x, coordinates.y, player.w, player.h);
-
-        ctx.save();
-        ctx.translate(coordinates.x + player.w / 2, coordinates.y + player.h / 2);
-        ctx.rotate(player.controls.θ)
-        ctx.beginPath();
-        ctx.moveTo(0,0);
-        ctx.lineTo(100,0);
-        ctx.stroke();
-
-        ctx.restore();
+        
       }
       ctx.restore();
     }
