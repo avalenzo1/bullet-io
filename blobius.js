@@ -12,7 +12,7 @@ function UID() {
 
 class Ticker {
   constructor(delay) {
-    this.delay = (delay > 50) ? delay : 50;
+    this.delay = (delay > 5) ? delay : 50;
     this.intervalId = null;
   }
   
@@ -44,29 +44,33 @@ class Player {
         up: false,
         left: false,
         right: false,
-        bottom: false
+        down: false
       };
       this.θ = 0;
-      this.µ = 0.5;
+      this.µ = 0.95;
+      this.a = 5;
+      
       this.username = params.username || "Anonymous";
+    
+      this.buffer = [];
         
       this.#ticker = new Ticker(50);
     
       this.#ticker.step = () => {
         if (this.controls.up) {
-          this.yVel--;
+          this.yVel -= this.a;
         }
         
         if (this.controls.down) {
-          this.yVel++;
+          this.yVel += this.a;
         }
         
         if (this.controls.left) {
-          this.xVel--;
+          this.xVel -= this.a;
         }
         
         if (this.controls.right) {
-          this.xVel++;
+          this.xVel += this.a;
         }
         
         this.x += this.xVel;

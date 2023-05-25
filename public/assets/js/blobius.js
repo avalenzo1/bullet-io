@@ -59,7 +59,7 @@ class Game {
       up: false,
       left: false,
       right: false,
-      bottom: false
+      down: false
     }
   }
   
@@ -83,7 +83,7 @@ class Game {
       case 'S':
       case 's':
       case 'ArrowDown':
-        this.controls.bottom = state;
+        this.controls.down = state;
         break;
     }
   }
@@ -128,10 +128,14 @@ class Game {
     
     ctx.font = "16px Monospace"
     
+    
+    ctx.fillStyle = "#f00";
     if (this.room) {
-      for (let player of Object.keys(this.room)) {
+      for (let playerId of Object.keys(this.room.player)) {
+        let player = this.room.player[playerId];
+        
         ctx.beginPath();
-        ctx.arc(player.x, player.y, 5, 0, 2 * Math.PI);
+        ctx.arc(player.x, player.y, 100, 0, 2 * Math.PI);
         ctx.fill();
       }
     }
