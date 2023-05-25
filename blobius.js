@@ -124,7 +124,7 @@ class Player extends GameObject {
     this.lives = 3;
     this.hp = 100;
     this.hpCapacity = 100;
-    this.colliding = true;
+    this.colliding = false;
 
     this.controls = {
       up: false,
@@ -254,14 +254,22 @@ class Room {
     
     if (playerList.length > 1) {
       for (let i = 1; i < playerList.length; i++) {
-        let property = playerList[0];
-        let rect1 = playerList[1];
-        let rect1 = playerList[1];
+        let obj1 = playerList[i - 1];
+        let obj2 = playerList[i];
         
-        rect1.x < rect2.x + rect2.w &&
-        rect1.x + rect1.w > rect2.x &&
-        rect1.y < rect2.y + rect2.h &&
-        rect1.h + rect1.y > rect2.y
+        if (
+          obj1[1].x < obj2[1].x + obj2[1].w &&
+          obj1[1].x + obj1[1].w > obj2[1].x &&
+          obj1[1].y < obj2[1].y + obj2[1].h &&
+          obj1[1].h + obj1[1].y > obj2[1].y
+          )
+        {
+          obj1[1].colliding = true;
+          obj2[1].colliding = true;
+        } else {
+          obj1[1].colliding = false;
+          obj2[1].colliding = false;
+        }
       }
     }
   }

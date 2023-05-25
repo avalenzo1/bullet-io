@@ -188,10 +188,12 @@ class Game {
         let coordinates = (player === this.room.player[this.playerId]) ? camera : camera.getCoordinates(player.x, player.y)
         
         ctx.fillStyle = "#333";
+        ctx.strokeStyle = (player.colliding) ? "red" : "#333";
         ctx.fillMultiLineText(`${player.hp} / ${player.hpCapacity} hp \n${player.lives} live(s)`, coordinates.x, coordinates.y - 24)
         ctx.fillStyle = player.color;
         ctx.fillText(`${player.username}`, coordinates.x, coordinates.y - 36);
         ctx.fillRect(coordinates.x, coordinates.y, player.w, player.h);
+        ctx.strokeRect(coordinates.x, coordinates.y, player.w, player.h);
 
         ctx.save();
         
