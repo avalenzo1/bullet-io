@@ -130,7 +130,7 @@ class Game {
     
     if (this.showDebug) {
       ctx.fillStyle = "#000";
-      ctx.fillMultiLineText(`Camera: ${JSON.stringify(this.camera, null, "  ")}\n\nPlayer: ${JSON.stringify(this.controls, null, " ")}\n\Room: ${JSON.stringify(this.room, null, " ")}`, 0, 16);
+      ctx.fillMultiLineText(`Camera: ${JSON.stringify(this.camera, null, "  ")}\n\nPlayer: ${JSON.stringify(this.controls, null, " ")}\n\nRoom: ${JSON.stringify(this.room, null, " ")}`, 0, 16);
     }
     
     this.requestId = window.requestAnimationFrame(this.render.bind(this));

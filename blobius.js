@@ -19,17 +19,19 @@ class Ticker {
   start() {
     console.log(this)
     if (typeof this.step === 'function' && typeof this.delay === 'number') {
-      setInterval(this.step, this.delay);
+      this.intervalId = setInterval(this.step, this.delay);
     }
     
   }
   
   stop() {
-    clearInterval(this.timeoutId);
+    clearInterval(this.intervalId);
   }
 }
 
 class Player {
+  #ticker;
+  
   constructor({ socket, params }) {
       this.id = socket.id;
       this.username = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], length: 3 });
@@ -41,8 +43,12 @@ class Player {
       this.controls;
       this.theta = 0;
     
+      this.#ticker = new Ticker(50);
+    
       this.username = params.username || "Anonymous";
   }
+  
+  
 }
 
 class Room {
@@ -55,12 +61,10 @@ class Room {
     this.name = name || `${uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], length: 3 })}`;
     this.player = {};
     this.capacity = 5;
-    this.#ticker = new Ticker(1000);
+    this.#ticker = new Ticker(50);
     
     this.#ticker.step = () => {
-      console.log("heyyaaa")
-      
-      this.#io.to(this.id).emit("Room/Join", this);
+      this.#io.to(this.id).emit("Room/Tick", this);
     };
     
     this.#ticker.start();
