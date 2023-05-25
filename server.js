@@ -6,6 +6,11 @@ function roomHasInstanceOfSocket(room, socket) {
   if (room.player[socket.id] !== undefined) return true;
 }
 
+Object.filter = (obj, predicate) => 
+    Object.keys(obj)
+          .filter( key => predicate(obj[key]) )
+          .reduce( (res, key) => (res[key] = obj[key], res), {} );
+
 class Server {
   constructor(io) {
     this.io = io;
@@ -78,7 +83,7 @@ class Server {
   }
 
   getRandomRoom(params) {
-    let roomList = Object.keys(this.room);
+    let roomList = Object.keys(Object.filter(this.room, room => room.available) );
     let room;
 
     if (roomList.length > 0) {

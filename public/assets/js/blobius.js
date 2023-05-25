@@ -54,6 +54,11 @@ class Game {
     window.addEventListener("keydown", this.keyDown.bind(this));
     window.addEventListener("keyup", this.keyUp.bind(this));
     
+    // Handles Mousemove Events
+    window.addEventListener("mousemove", this.mouseMove.bind(this));
+    
+    console.log(socket)
+    
     this.playerId = socket.id;
     this.controls = {
       up: false,
@@ -98,6 +103,14 @@ class Game {
   
   keyUp(e) {
     this.setControls(e.key, false);
+  }
+  
+  mouseMove(e) {
+    if (this.room) {
+      console.log(this.playerId);
+      console.log(this.room.player);
+      console.log(Math.atan2((e.clientY - this.room.player[this.playerId].y), (e.clientX - this.room.player[this.playerId].x)))
+    }
   }
   
   resizeCanvas() {
