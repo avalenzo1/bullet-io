@@ -81,7 +81,9 @@ class Bullet extends GameObject {
     
     this.config.useGravity = false;
     
+    this.showExplosion = false;
     
+    this.θ = θ;
     this.#ticker = new Ticker(50);
     
     this.#ticker.step = () => {
@@ -99,6 +101,7 @@ class Bullet extends GameObject {
   }
   
   selfDestruct() {
+    this.showExplosion = true;
     this.#ticker.stop();
   }
 }
@@ -154,8 +157,13 @@ class Player extends GameObject {
         this.bullets.push(bullet);
         
         setTimeout(() => {
+          
           bullet.selfDestruct();
-        }, 1000)
+          
+          setTimeout(() => {
+            this.bullets.shift()
+          }, 1000);
+        }, 1000);
       }
 
       if (this.controls.left) {
@@ -203,6 +211,12 @@ class Player extends GameObject {
 
     this.x = 0;
     this.y = 0;
+  }
+}
+
+class CollisionEngine {
+  constructor(world) {
+    this.world = world;
   }
 }
 
