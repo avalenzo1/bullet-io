@@ -98,7 +98,9 @@ class Bullet extends GameObject {
     this.#ticker.start();
   }
   
-  
+  selfDestruct() {
+    this.#ticker.stop();
+  }
 }
 
 class Player extends GameObject {
@@ -152,8 +154,8 @@ class Player extends GameObject {
         this.bullets.push(bullet);
         
         setTimeout(() => {
-          bullet.
-        })
+          bullet.selfDestruct();
+        }, 1000)
       }
 
       if (this.controls.left) {
