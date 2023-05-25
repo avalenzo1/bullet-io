@@ -132,12 +132,17 @@ class Game {
     ctx.font = "16px Monospace";
 
     if (this.room) {
+      ctx.save();
       for (let playerId of Object.keys(this.room.player)) {
         let player = this.room.player[playerId];
         
+        ctx.fillStyle = "#333";
+        ctx.fillText(`${player.hp} / ${player.hpCapacity} hp`, player.x, player.y)
         ctx.fillStyle = player.color;
+        ctx.fillText(`${player.username}`, player.x, player.y - 12);
         ctx.fillRect(player.x, player.y, player.w, player.h);
       }
+      ctx.restore();
     }
     
     

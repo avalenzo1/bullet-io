@@ -43,6 +43,7 @@ class Player {
       this.id = socket.id;
       this.username = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], length: 3 });
       this.hp = 100;
+      this.hpCapacity = 100;
       this.x = 0;
       this.y = 0;
       this.w = 50;
@@ -108,9 +109,9 @@ class Player {
         this.#velocity.y *= this.#µ;
         
         // Sets boundaries of arena
-        if (this.y > 500 - this.#collis) {
-          this.#velocity.x = 0;
-          this.y = 500;
+        if (this.y > 500 - this.#collision.h) {
+          this.#velocity.y = 0;
+          this.y = 500 - this.#collision.h;
         }
       };
     
