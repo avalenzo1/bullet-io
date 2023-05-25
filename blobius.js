@@ -29,8 +29,7 @@ class Ticker {
   }
 }
 
-class Player {
-  #ticker;
+class GameObject {
   #µ;
   #a;
   #θ;
@@ -38,15 +37,18 @@ class Player {
   #collision;
   #velocity;
   #acceleration;
+  #config;
   
-  constructor({ socket, params }) {
-      this.id = socket.id;
-      this.username = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], length: 3 });
-      this.x = 0;
-      this.y = 0;
-      this.w = 50;
-      this.h = 100;
-      this.mass = 50;
+  constructor(x, y, w, h, mass) {
+      this.x = x || 0;
+      this.y = y || 0;
+      this.w = w || 50;
+      this.h = h || 100;
+      this.mass = mass || 1;
+    
+      this.#config = {
+        useGravity: false
+      };
     
       // Theta
       this.#θ = 0;
@@ -64,13 +66,34 @@ class Player {
     
       this.#acceleration = {
         x: 1,
-        y: this.#g
+        y: (this.#config.useGravity) ? this.#g : 0
       };
     
       this.#collision = {
-        w: 50,
-        h: 100
+        w: 10,
+        h: 10
       };
+  }
+}
+
+class Player extends GameObject {
+  #ticker;
+  #µ;
+  #a;
+  #θ;
+  #g;
+  #collision;
+  #velocity;
+  #acceleration;
+  #config;
+  
+  constructor({ socket, params }) {
+      super();
+    
+      console.log(this.#velocity)
+    
+      this.id = socket.id;
+      this.username = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals], length: 3 });
     
       this.lives = 3;
       this.hp = 100;
