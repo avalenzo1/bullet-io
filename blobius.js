@@ -59,6 +59,19 @@ function objectSystemIsColliding(obj1, obj2) {
   return false;
 }
 
+function checkForCollision(obj1, obj2) {
+  removeItem(obj1.collidingWith, obj2);
+  removeItem(obj2.collidingWith, obj1);
+
+  if (objectSystemIsColliding(obj1, obj2)) {
+    appendItem(obj1.collidingWith, obj2)
+    appendItem(obj2.collidingWith, obj1);
+  } else {
+    removeItem(obj1.collidingWith, obj2);
+    removeItem(obj2.collidingWith, obj1);
+  }
+}
+
 function tickerArrayStep(objects) {
   if (objects.length > 0) {
     
@@ -276,32 +289,24 @@ class Room {
     // Converts Objects to Array of Values only
     let playerList = Object.values(this.player);
     
-    for (let i = 0; i < elements.length; i++) {
-      let obj1 = structuredClone(elements[i]); // element i
+    for (let i = 0; i < playerList.length; i++) {
+      let obj1 = JSON.parse(JSON.stringify((playerList[i]))); // element i
       
-      for (let j = 0; j < elements.length; j++) {
+      for (let j = 0; j < playerList.length; j++) {
         
         if (i == j)
           continue;
         
-        let obj2 = structuredClone(elements[j]); // element j
+        let obj2 = JSON.parse(JSON.stringify((playerList[j]))); // element j
 
-        removeItem(obj1.collidingWith, obj2);
-        removeItem(obj2.collidingWith, obj1);
+        checkForCollision(obj1, obj2);
         
-        if (objectSystemIsColliding(obj1, obj2)) {
-          appendItem(obj1.collidingWith, obj2)
-          appendItem(obj2.collidingWith, obj1);
-        } else {
-          removeItem(obj1.collidingWith, obj2);
-          removeItem(obj2.collidingWith, obj1);
+        if (obj2.bullets.length > 0)
+          {
+        for (let b = 0; b < obj2.bullets.length; b++) {
+          checkForCollision(obj1, JSON.parse(JSON.stringify((obj2.bullets[b]))));
         }
-        
-        let bulletList = obj2
-        
-        for (let b = 0; b < bulletList.length; b++) {
-          
-        }
+          }
       }
     }
   }
