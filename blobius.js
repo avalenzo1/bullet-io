@@ -284,11 +284,11 @@ class Room {
         if (i == j)
           continue;
         
+        let obj2 = elements[j]; // element j
+
         removeItem(obj1.collidingWith, obj2.id);
         removeItem(obj2.collidingWith, obj1.id);
         
-        let obj2 = elements[j]; // element j
-
         if (objectSystemIsColliding(obj1, obj2)) {
           appendItem(obj1.collidingWith, obj2.id)
           appendItem(obj2.collidingWith, obj1.id);
