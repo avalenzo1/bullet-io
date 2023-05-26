@@ -92,8 +92,8 @@ class Game {
     
     this.assets = {};
     
-    this.assets.bullet = new Image();
-    this.assets.bullet.src = "https://media.istockphoto.com/id/1214905793/photo/foam-dart-bullet-for-gun-toy-isolated-on-white-background.jpg?s=612x612&w=0&k=20&c=bHRMZ2cglTEdG3QGN7y16sMZq-jq0Ukt7ZyGTVbyMBA="
+    this.assets.explosion = new Image();
+    this.assets.explosion.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Explosion-155624_icon.svg/2048px-Explosion-155624_icon.svg.png"
   }
 
   setControls(key, state) { 
@@ -210,7 +210,13 @@ class Game {
         if (player.bullets.length > 0) {
           for (let bullet of player.bullets) {
             let bulletCoordinates = camera.getCoordinates(bullet.x, bullet.y)
-            ctx.fillRect(bulletCoordinates.x, bulletCoordinates.y, bullet.w, bullet.h);
+            
+            if (bullet.showExplosion) {
+              ctx.fillRect(bulletCoordinates.x, bulletCoordinates.y, bullet.w, bullet.h);
+            } else {
+              ctx.fillRect(bulletCoordinates.x, bulletCoordinates.y, bullet.w, bullet.h);
+            }
+            
           }
         }
       }
