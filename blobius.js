@@ -15,6 +15,18 @@ function UID() {
   return Math.random().toString(36).slice(-6).toUpperCase();
 }
 
+function appendItem(list, item) {
+  list.push(item);
+}
+
+function removeItem(list, item) {
+  const index = list.indexOf(item);
+  
+  if (index > -1) { // only splice array when item is found
+    list.splice(index, 1); // 2nd parameter means remove one item only
+  }
+}
+
 class Ticker {
   constructor(delay) {
     this.delay = delay > 5 ? delay : 50;
@@ -58,6 +70,7 @@ function tickerArrayStep(objects) {
 
 class GameObject {
   constructor(x, y, w, h, mass) {
+    this.id = UUID();
     this.x = x || 0;
     this.y = y || 0;
     this.w = w || 10;
@@ -137,7 +150,7 @@ class Player extends GameObject {
     this.lives = 3;
     this.hp = 100;
     this.hpCapacity = 100;
-    this.colliding = false;
+    this.collidingWith = [];
 
     this.controls = {
       up: false,
@@ -267,17 +280,21 @@ class Room {
       let obj1 = elements[i]; // element i
       
       for (let j = 0; j < elements.length; j++) {
+        
         if (i == j)
           continue;
+        
+        removeItem(obj1.collidingWith, obj2.id);
+        removeItem(obj2.collidingWith, obj1.id);
         
         let obj2 = elements[j]; // element j
 
         if (objectSystemIsColliding(obj1, obj2)) {
-          obj1.colliding.push(obj2);
-          obj2.colliding.push(obj1);
+          appendItem(obj1.collidingWith, obj2.id)
+          appendItem(obj2.collidingWith, obj1.id);
         } else {
-          removeItem(obj1, obj2);
-          removeItem(obj2, obj1);
+          removeItem(obj1.collidingWith, obj2.id);
+          removeItem(obj2.collidingWith, obj1.id);
         }
       }
     }
