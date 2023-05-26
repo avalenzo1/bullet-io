@@ -212,7 +212,7 @@ class Game {
             let bulletCoordinates = camera.getCoordinates(bullet.x, bullet.y)
             
             if (bullet.showExplosion) {
-              ctx.fillRect(bulletCoordinates.x, bulletCoordinates.y, bullet.w, bullet.h);
+              ctx.drawImage(this.assets.explosion, bulletCoordinates.x, bulletCoordinates.y, bullet.w, bullet.h);
             } else {
               ctx.fillRect(bulletCoordinates.x, bulletCoordinates.y, bullet.w, bullet.h);
             }
