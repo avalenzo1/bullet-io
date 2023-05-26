@@ -206,6 +206,7 @@ class Game {
 
         ctx.restore();
         
+        ctx.fillStyle = "#000";
         if (player.bullets.length > 0) {
           for (let bullet of player.bullets) {
             let bulletCoordinates = camera.getCoordinates(bullet.x, bullet.y)

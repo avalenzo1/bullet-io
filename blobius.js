@@ -33,6 +33,20 @@ class Ticker {
   }
 }
 
+function objectSystemIsColliding(obj1, obj2) {
+  if (
+    obj1.x < obj2.x + obj2.w &&
+    obj1.x + obj1.w > obj2.x &&
+    obj1.y < obj2.y + obj2.h &&
+    obj1.h + obj1.y > obj2.y
+    )
+  {
+    return true;
+  }
+  
+  return false;
+}
+
 function tickerArrayStep(objects) {
   if (objects.length > 0) {
     
@@ -246,7 +260,8 @@ class Room {
   }
   
   checkForCollision() {
-    let elements = Object.entries(this.player);
+    // Converts Objects to Array of Values only
+    let elements = Object.values(this.player);
     
     for (let i = 0; i < elements.length; i++) {
       let obj1 = elements[i]; // element i
@@ -255,20 +270,14 @@ class Room {
         if (i == j)
           continue;
         
-        let obj2 = elements[j];// element j
+        let obj2 = elements[j]; // element j
 
-        if (
-          obj1[1].x < obj2[1].x + obj2[1].w &&
-          obj1[1].x + obj1[1].w > obj2[1].x &&
-          obj1[1].y < obj2[1].y + obj2[1].h &&
-          obj1[1].h + obj1[1].y > obj2[1].y
-          )
-        {
-          obj1[1].colliding = true;
-          obj2[1].colliding = true;
+        if (objectSystemIsColliding(obj1, obj2)) {
+          obj1.colliding.push(obj2);
+          obj2.colliding.push(obj1);
         } else {
-          obj1[1].colliding = false;
-          obj2[1].colliding = false;
+          removeItem(obj1, obj2);
+          removeItem(obj2, obj1);
         }
       }
     }
