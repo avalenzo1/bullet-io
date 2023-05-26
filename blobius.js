@@ -20,6 +20,9 @@ function appendItem(list, item) {
 }
 
 function removeItem(list, item) {
+  console.log(list)
+  console.log(item)
+  
   const index = list.indexOf(item);
   
   if (index > -1) { // only splice array when item is found
@@ -301,12 +304,12 @@ class Room {
 
         checkForCollision(obj1, obj2);
         
-        if (obj2.bullets.length > 0)
-          {
-        for (let b = 0; b < obj2.bullets.length; b++) {
-          checkForCollision(obj1, JSON.parse(JSON.stringify((obj2.bullets[b]))));
-        }
-          }
+        // if (obj2.bullets.length > 0)
+        // {
+        //   for (let b = 0; b < obj2.bullets.length; b++) {
+        //     checkForCollision(obj1, JSON.parse(JSON.stringify((obj2.bullets[b]))));
+        //   }
+        // }
       }
     }
   }
