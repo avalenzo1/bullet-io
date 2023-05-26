@@ -274,27 +274,33 @@ class Room {
   
   checkForCollision() {
     // Converts Objects to Array of Values only
-    let elements = Object.values(this.player);
+    let playerList = Object.values(this.player);
     
     for (let i = 0; i < elements.length; i++) {
-      let obj1 = elements[i]; // element i
+      let obj1 = structuredClone(elements[i]); // element i
       
       for (let j = 0; j < elements.length; j++) {
         
         if (i == j)
           continue;
         
-        let obj2 = elements[j]; // element j
+        let obj2 = structuredClone(elements[j]); // element j
 
-        removeItem(obj1.collidingWith, obj2.id);
-        removeItem(obj2.collidingWith, obj1.id);
+        removeItem(obj1.collidingWith, obj2);
+        removeItem(obj2.collidingWith, obj1);
         
         if (objectSystemIsColliding(obj1, obj2)) {
-          appendItem(obj1.collidingWith, obj2.id)
-          appendItem(obj2.collidingWith, obj1.id);
+          appendItem(obj1.collidingWith, obj2)
+          appendItem(obj2.collidingWith, obj1);
         } else {
-          removeItem(obj1.collidingWith, obj2.id);
-          removeItem(obj2.collidingWith, obj1.id);
+          removeItem(obj1.collidingWith, obj2);
+          removeItem(obj2.collidingWith, obj1);
+        }
+        
+        let bulletList = obj2
+        
+        for (let b = 0; b < bulletList.length; b++) {
+          
         }
       }
     }
