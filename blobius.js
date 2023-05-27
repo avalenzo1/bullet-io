@@ -102,7 +102,7 @@ class GameObject {
 
     this.acceleration = {
       x: 1,
-      y: this.config.useGravity ? this.g * this.mass : 0,
+      y: this.config.useGravity ? this.g : 0,
     };
 
     this.collision = {
@@ -114,7 +114,7 @@ class GameObject {
 
 class Bullet extends GameObject {
   constructor(x, y, θ) {
-    super(x,y,10,10,0.01);
+    super(x,y,10,10);
     
     this.config.useGravity = false;
     
@@ -127,8 +127,6 @@ class Bullet extends GameObject {
   step() {
     this.velocity.x += Math.cos(this.θ) * this.range;
     this.velocity.y += Math.sin(this.θ) * this.range;
-    
-    this.velocity.y += this.acceleration.y;
 
     this.x += this.velocity.x;
     this.y += this.velocity.y;
@@ -262,9 +260,7 @@ class Room {
 
     this.#ticker.step = () => {
       tickerArrayStep(Object.values(this.player));
-      
-      
-      
+
       this.checkForCollision();
       
       this.#io.to(this.id).emit("Room/Tick", this);
@@ -308,6 +304,8 @@ class Room {
 
           if (objectSystemIsColliding(obj1, bullet)) {
             obj1.hp--;
+            obj1.velocity.x += Math.cos(obj2.controls.θ);
+            obj1.velocity.y += Math.sin(obj2.controls.θ);
             
             bullet.selfDestruct();
           }
