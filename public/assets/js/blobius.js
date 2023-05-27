@@ -79,7 +79,9 @@ class Game {
     window.addEventListener("keyup", this.keyUp.bind(this));
     
     // Handles Mousemove Events
+    window.addEventListener("mousedown", this.mouseDown.bind(this));
     window.addEventListener("mousemove", this.mouseMove.bind(this));
+    window.addEventListener("mouseup", this.mouseUp.bind(this));
     
     this.playerId;
     this.controls = {
@@ -98,6 +100,7 @@ class Game {
 
   setControls(key, state) { 
     switch (key) {
+      case ' ':
       case 'W':
       case 'w':
       case 'ArrowUp':
@@ -118,9 +121,6 @@ class Game {
       case 'ArrowDown':
         this.controls.down = state;
         break;
-      case ' ':
-        this.controls.shoot = state;
-        break;
     }
   }
   
@@ -134,6 +134,14 @@ class Game {
   
   keyUp(e) {
     this.setControls(e.key, false);
+  }
+  
+  mouseDown(e) {
+    this.controls.shoot = true;
+  }
+  
+  mouseUp(e) {
+     this.controls.shoot = false;
   }
   
   mouseMove(e) {
